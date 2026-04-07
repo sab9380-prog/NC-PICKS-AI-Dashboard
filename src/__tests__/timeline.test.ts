@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { monthToIndex, indexToPercent, getGanttBar, TIMELINE_MONTHS } from '../lib/timeline'
+import { monthToIndex, indexToPercent, getGanttBar } from '../lib/timeline'
 
 describe('monthToIndex', () => {
   it('2026-01 is index 0', () => {

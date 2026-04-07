@@ -7,8 +7,6 @@ import {
   calcSPI,
   getSPIStatus,
   calcDelayDays,
-  calcElapsedRatio,
-  calcExpectedProgress,
 } from '../lib/score'
 import type { SystemState } from '../types'
 
