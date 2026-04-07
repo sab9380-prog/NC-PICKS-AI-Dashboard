@@ -13,6 +13,7 @@ import ZoneGroup from '../components/status/ZoneGroup'
 import AlertPanel from '../components/schedule/AlertPanel'
 import RagTable from '../components/schedule/RagTable'
 import GanttChart from '../components/timeline/GanttChart'
+import AdminPanel from '../components/admin/AdminPanel'
 
 const NOW = '2026-04'
 
@@ -113,10 +114,10 @@ function TimelineTab({
 }
 
 export default function DashboardPage() {
-  const { states, updateSystem, resetAll } = useSystems()
+  const { states, updateSystem } = useSystems()
   const { activeMembers } = useMembers()
   const { latestSnapshots } = useSnapshots()
-  const { currentMember, logout } = useAuth()
+  const { currentMember } = useAuth()
   const [filter, setFilter] = useState<FilterValue>('all')
   const [showAdmin, setShowAdmin] = useState(false)
 
@@ -162,47 +163,9 @@ export default function DashboardPage() {
         }
       />
 
-      {/* Admin panel overlay (placeholder) */}
+      {/* Admin panel */}
       {showAdmin && (
-        <div className="fixed inset-0 z-50 flex items-start justify-end">
-          <div
-            className="absolute inset-0 bg-black/50"
-            onClick={() => setShowAdmin(false)}
-          />
-          <div className="relative bg-slate-900 border border-slate-700 w-80 min-h-screen p-6 shadow-2xl">
-            <h2 className="text-lg font-bold mb-4">설정</h2>
-
-            <div className="space-y-4 text-sm">
-              <div className="text-slate-400">
-                현재 사용자:{' '}
-                <span className="text-white font-medium">
-                  {currentMember?.name ?? '없음'}
-                </span>
-              </div>
-
-              <button
-                onClick={() => { logout(); setShowAdmin(false) }}
-                className="w-full bg-slate-800 hover:bg-slate-700 text-white rounded-lg py-2 transition-colors"
-              >
-                로그아웃
-              </button>
-
-              <hr className="border-slate-700" />
-
-              <button
-                onClick={() => {
-                  if (window.confirm('모든 시스템 상태를 초기화하시겠습니까?')) {
-                    resetAll()
-                    setShowAdmin(false)
-                  }
-                }}
-                className="w-full bg-red-900/40 hover:bg-red-900/70 text-red-400 rounded-lg py-2 transition-colors border border-red-800/50"
-              >
-                전체 초기화
-              </button>
-            </div>
-          </div>
-        </div>
+        <AdminPanel onClose={() => setShowAdmin(false)} />
       )}
     </>
   )
