@@ -10,6 +10,11 @@ import Header from '../components/layout/Header'
 import StageLegend from '../components/status/StageLegend'
 import StatusFilter, { type FilterValue } from '../components/status/StatusFilter'
 import ZoneGroup from '../components/status/ZoneGroup'
+import AlertPanel from '../components/schedule/AlertPanel'
+import RagTable from '../components/schedule/RagTable'
+import GanttChart from '../components/timeline/GanttChart'
+
+const NOW = '2026-04'
 
 function StatusTab({
   states,
@@ -68,11 +73,42 @@ function StatusTab({
   )
 }
 
-function PlaceholderTab({ label }: { label: string }) {
+function ScheduleTab({
+  states,
+  members,
+  snapshots,
+}: {
+  states: ReturnType<typeof useSystems>['states']
+  members: ReturnType<typeof useMembers>['members']
+  snapshots: ReturnType<typeof useSnapshots>['latestSnapshots']
+}) {
   return (
-    <div className="flex items-center justify-center h-64 text-slate-600 text-sm">
-      {label} — 준비중
+    <div className="space-y-0">
+      <AlertPanel states={states} members={members} now={NOW} />
+      <RagTable states={states} members={members} snapshots={snapshots} now={NOW} />
     </div>
+  )
+}
+
+function TimelineTab({
+  states,
+  members,
+  onUpdate,
+  readOnly,
+}: {
+  states: ReturnType<typeof useSystems>['states']
+  members: ReturnType<typeof useMembers>['members']
+  onUpdate: ReturnType<typeof useSystems>['updateSystem']
+  readOnly: boolean
+}) {
+  return (
+    <GanttChart
+      states={states}
+      members={members}
+      now={NOW}
+      onUpdateDates={(systemId, updates) => onUpdate(systemId, updates)}
+      readOnly={readOnly}
+    />
   )
 }
 
@@ -109,8 +145,21 @@ export default function DashboardPage() {
             readOnly={readOnly}
           />
         }
-        scheduleTab={<PlaceholderTab label="일정 현황" />}
-        timelineTab={<PlaceholderTab label="타임라인" />}
+        scheduleTab={
+          <ScheduleTab
+            states={states}
+            members={activeMembers}
+            snapshots={latestSnapshots}
+          />
+        }
+        timelineTab={
+          <TimelineTab
+            states={states}
+            members={activeMembers}
+            onUpdate={updateSystem}
+            readOnly={readOnly}
+          />
+        }
       />
 
       {/* Admin panel overlay (placeholder) */}
