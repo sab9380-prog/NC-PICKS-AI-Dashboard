@@ -1,8 +1,7 @@
 import { ZONES } from '../../data/zones'
 import { SYSTEMS } from '../../data/systems'
 import { STAGES } from '../../data/stages'
-import { getTotalScore, getSystemScore, getZoneScore } from '../../lib/score'
-import { calcDelta } from '../../hooks/useSnapshots'
+import { getTotalScore, getZoneScore } from '../../lib/score'
 import type { SystemState, ScoreSnapshot } from '../../types'
 
 type Props = {
@@ -10,220 +9,172 @@ type Props = {
   snapshots: Record<string, ScoreSnapshot>
 }
 
-// Stage colors matching spec: slate-600, blue-900, blue-800, cyan-800, emerald-800, lime-800, green-700
-const STAGE_COLORS = [
-  'bg-slate-600',
-  'bg-blue-900',
-  'bg-blue-800',
-  'bg-cyan-800',
-  'bg-emerald-800',
-  'bg-lime-800',
-  'bg-green-700',
-]
-
-function scoreColorClass(score: number): string {
-  if (score >= 70) return 'text-emerald-400'
-  if (score >= 40) return 'text-amber-400'
-  return 'text-red-400'
+// ── KPI Card ──────────────────────────────────────────────────────────────────
+function KpiCard({
+  accent,
+  label,
+  children,
+}: {
+  accent: string
+  label: string
+  children: React.ReactNode
+}) {
+  return (
+    <div
+      className="flex-1 min-w-0 rounded-lg px-4 py-3 flex flex-col gap-1"
+      style={{
+        backgroundColor: '#0e0e22',
+        border: '1px solid #1a1a35',
+        borderTop: `2px solid ${accent}`,
+      }}
+    >
+      <div className="text-[11px] font-medium" style={{ color: '#555570' }}>
+        {label}
+      </div>
+      <div className="flex-1">{children}</div>
+    </div>
+  )
 }
 
-function deltaDisplay(delta: number | null): string {
-  if (delta === null) return ''
-  if (delta > 0) return `+${delta}`
-  return String(delta)
+// ── Zone Card ─────────────────────────────────────────────────────────────────
+function ZoneCard({
+  zone,
+  score,
+  systemCount,
+}: {
+  zone: (typeof ZONES)[number]
+  score: number
+  systemCount: number
+}) {
+  const progress = Math.min(score / 100, 1)
+
+  return (
+    <div
+      className="flex-1 min-w-0 rounded-lg px-3 py-2.5 flex flex-col gap-2"
+      style={{
+        backgroundColor: '#0e0e22',
+        border: '1px solid #1a1a35',
+      }}
+    >
+      {/* Zone name row */}
+      <div className="flex items-center gap-2">
+        <span
+          className="w-2.5 h-2.5 rounded-full shrink-0"
+          style={{ backgroundColor: zone.color }}
+        />
+        <span className="text-[11px] font-semibold truncate" style={{ color: '#e0e0f0' }}>
+          {zone.name}
+        </span>
+      </div>
+
+      {/* Score */}
+      <div className="flex items-baseline gap-1">
+        <span className="text-2xl font-bold tabular-nums" style={{ color: '#e0e0f0' }}>
+          {score}
+        </span>
+        <span className="text-[11px]" style={{ color: '#555570' }}>pt</span>
+      </div>
+
+      {/* Progress bar */}
+      <div className="h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: '#1a1a35' }}>
+        <div
+          className="h-full rounded-full transition-all duration-500"
+          style={{ width: `${progress * 100}%`, backgroundColor: zone.color }}
+        />
+      </div>
+
+      {/* Bottom: system count + target month */}
+      <div className="flex items-center justify-between">
+        <span className="text-[10px]" style={{ color: '#555570' }}>
+          {systemCount}개
+        </span>
+        <span className="text-[10px]" style={{ color: '#555570' }}>
+          {zone.defaultTargetMonth}
+        </span>
+      </div>
+    </div>
+  )
 }
 
-function deltaColorClass(delta: number | null): string {
-  if (delta === null) return 'text-slate-500'
-  if (delta > 0) return 'text-emerald-400'
-  if (delta < 0) return 'text-red-400'
-  return 'text-slate-400'
-}
-
-export default function Header({ states, snapshots }: Props) {
+// ── Main Header ───────────────────────────────────────────────────────────────
+export default function Header({ states }: Props) {
   const totalScore = getTotalScore(states)
 
-  // Calc total delta from snapshots
-  const totalDelta: number | null = (() => {
-    let hasAny = false
-    let sum = 0
-    for (const sys of SYSTEMS) {
-      const score = getSystemScore(states[sys.id]?.stage ?? 0)
-      const d = calcDelta(sys.id, score, snapshots)
-      if (d !== null) {
-        hasAny = true
-        sum += d
-      }
-    }
-    if (!hasAny) return null
-    return Math.round(sum / SYSTEMS.length)
-  })()
-
-  // Summary counts
-  const counts = SYSTEMS.reduce(
-    (acc, sys) => {
-      const state = states[sys.id]
-      const stage = state?.stage ?? 0
-      const status = state?.status ?? 'normal'
-      if (stage === 6) acc.done++
-      else if (status === 'delay') acc.delay++
-      else if (stage === 0) acc.notStarted++
-      else acc.inProgress++
-      return acc
-    },
-    { done: 0, inProgress: 0, notStarted: 0, delay: 0 },
-  )
-
-  // Stage distribution (count systems per stage 0-6)
-  const stageCounts = new Array(7).fill(0)
+  // Stage distribution counts
+  const stageCounts = new Array(7).fill(0) as number[]
   for (const sys of SYSTEMS) {
     const stage = states[sys.id]?.stage ?? 0
     stageCounts[stage] = (stageCounts[stage] ?? 0) + 1
   }
-  const totalSystems = SYSTEMS.length
+
+  // Stage names for distribution display
+  const stageNames = STAGES.map(s => s.name)
+
+  // Count systems at stage >= 3 (도입 이상)
+  const deployedCount = SYSTEMS.filter(sys => (states[sys.id]?.stage ?? 0) >= 3).length
+
+  // Value per deployed system (roughly 1억 each, simplified)
+  const speedValue = `+약 ${deployedCount}억`
 
   return (
-    <div className="space-y-2">
-      {/* Top row: total score + summary counts */}
-      <div className="flex items-center gap-4 flex-wrap">
-        {/* Total score */}
-        <div className="flex items-baseline gap-2">
-          <span className={`text-3xl font-bold tabular-nums ${scoreColorClass(totalScore)}`}>
-            {totalScore}
-          </span>
-          <span className="text-slate-500 text-sm">/ 100</span>
-          {totalDelta !== null && (
-            <span className={`text-sm font-medium ${deltaColorClass(totalDelta)}`}>
-              {deltaDisplay(totalDelta)}
+    <div className="space-y-3">
+      {/* KPI Cards row */}
+      <div className="flex gap-3">
+        {/* 1. 전체 평균 점수 */}
+        <KpiCard accent="#378add" label="전체 평균 점수">
+          <div className="flex items-baseline gap-2">
+            <span className="text-3xl font-bold tabular-nums" style={{ color: '#e0e0f0' }}>
+              {totalScore}
             </span>
-          )}
-        </div>
+            <span className="text-sm" style={{ color: '#555570' }}>/ 100</span>
+          </div>
+        </KpiCard>
 
-        {/* Divider */}
-        <div className="w-px h-8 bg-slate-700" />
-
-        {/* 4 summary counts */}
-        <div className="flex items-center gap-3 text-sm">
-          <div className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-green-500 inline-block" />
-            <span className="text-slate-400">운영완료</span>
-            <span className="font-bold text-white ml-1">{counts.done}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-blue-500 inline-block" />
-            <span className="text-slate-400">진행중</span>
-            <span className="font-bold text-white ml-1">{counts.inProgress}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-slate-500 inline-block" />
-            <span className="text-slate-400">미착수</span>
-            <span className="font-bold text-white ml-1">{counts.notStarted}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-red-500 inline-block" />
-            <span className="text-slate-400">지연</span>
-            <span className="font-bold text-white ml-1">{counts.delay}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Stage distribution bar */}
-      <div>
-        <div className="flex h-3 rounded overflow-hidden gap-px">
-          {STAGES.map((stage, i) => {
-            const count = stageCounts[i] ?? 0
-            if (count === 0) return null
-            const pct = (count / totalSystems) * 100
-            return (
-              <div
-                key={stage.level}
-                className={`${STAGE_COLORS[i]} flex items-center justify-center`}
-                style={{ width: `${pct}%` }}
-                title={`${stage.name}: ${count}개`}
-              />
-            )
-          })}
-        </div>
-        <div className="flex gap-3 mt-1 flex-wrap">
-          {STAGES.map((stage, i) => (
-            <div key={stage.level} className="flex items-center gap-1">
-              <span className={`w-2 h-2 rounded-sm ${STAGE_COLORS[i]} inline-block`} />
-              <span className="text-xs text-slate-500">
-                {stage.name} {stageCounts[i] ?? 0}
+        {/* 2. 단계 분포 */}
+        <KpiCard accent="#7f77dd" label="단계 분포">
+          <div className="flex flex-wrap gap-x-3 gap-y-1 mt-1">
+            {stageNames.map((name, i) => (
+              <span key={i} className="text-xs tabular-nums" style={{ color: '#e0e0f0' }}>
+                {name}{' '}
+                <span className="font-bold">{stageCounts[i] ?? 0}</span>
               </span>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </KpiCard>
+
+        {/* 3. 속도 환산 가치 */}
+        <KpiCard accent="#1d9e75" label="속도 환산 가치">
+          <div className="text-2xl font-bold tabular-nums" style={{ color: '#1d9e75' }}>
+            {speedValue}
+          </div>
+          <div className="text-[10px] mt-0.5" style={{ color: '#555570' }}>
+            도입 이상 시스템 {deployedCount}개 기준
+          </div>
+        </KpiCard>
+
+        {/* 4. 목표 달성 시 */}
+        <KpiCard accent="#d85a30" label="목표 달성 시">
+          <div className="text-2xl font-bold" style={{ color: '#d85a30' }}>
+            +120억
+          </div>
+          <div className="text-[10px] mt-0.5" style={{ color: '#555570' }}>
+            연간 운영 효율 목표
+          </div>
+        </KpiCard>
       </div>
 
-      {/* Zone cards: 6-col grid → 3-col at md */}
-      <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
+      {/* Zone Cards row */}
+      <div className="flex gap-3">
         {ZONES.map(zone => {
           const zoneScore = getZoneScore(zone.id, states)
-          const zoneSystems = SYSTEMS.filter(s => s.zoneId === zone.id)
-
-          // Zone delta
-          const zoneDelta: number | null = (() => {
-            let hasAny = false
-            let sum = 0
-            for (const sys of zoneSystems) {
-              const score = getSystemScore(states[sys.id]?.stage ?? 0)
-              const d = calcDelta(sys.id, score, snapshots)
-              if (d !== null) { hasAny = true; sum += d }
-            }
-            if (!hasAny) return null
-            return Math.round(sum / zoneSystems.length)
-          })()
-
-          // Mini stage distribution for this zone
-          const zoneStages = new Array(7).fill(0)
-          for (const sys of zoneSystems) {
-            const stage = states[sys.id]?.stage ?? 0
-            zoneStages[stage] = (zoneStages[stage] ?? 0) + 1
-          }
-
+          const systemCount = SYSTEMS.filter(s => s.zoneId === zone.id).length
           return (
-            <div
+            <ZoneCard
               key={zone.id}
-              className="bg-slate-800/60 rounded-lg overflow-hidden border border-slate-700/50"
-              style={{ borderTopColor: zone.color, borderTopWidth: 2 }}
-            >
-              <div className="px-2 pt-2 pb-2">
-                <div className="text-xs text-slate-400 truncate font-medium">{zone.name}</div>
-                <div className="flex items-baseline gap-1 mt-0.5">
-                  <span className={`text-lg font-bold tabular-nums ${scoreColorClass(zoneScore)}`}>
-                    {zoneScore}
-                  </span>
-                  {zoneDelta !== null && (
-                    <span className={`text-xs ${deltaColorClass(zoneDelta)}`}>
-                      {deltaDisplay(zoneDelta)}
-                    </span>
-                  )}
-                </div>
-
-                {/* Mini distribution bar */}
-                <div className="flex h-1.5 rounded overflow-hidden gap-px mt-1">
-                  {STAGES.map((stage, i) => {
-                    const cnt = zoneStages[i] ?? 0
-                    if (cnt === 0) return null
-                    const pct = (cnt / zoneSystems.length) * 100
-                    return (
-                      <div
-                        key={stage.level}
-                        className={`${STAGE_COLORS[i]}`}
-                        style={{ width: `${pct}%` }}
-                        title={`${stage.name}: ${cnt}`}
-                      />
-                    )
-                  })}
-                </div>
-
-                <div className="flex justify-between mt-1 text-xs text-slate-500">
-                  <span>{zoneSystems.length}개</span>
-                  <span>{zone.defaultTargetMonth.slice(0, 7)}</span>
-                </div>
-              </div>
-            </div>
+              zone={zone}
+              score={zoneScore}
+              systemCount={systemCount}
+            />
           )
         })}
       </div>

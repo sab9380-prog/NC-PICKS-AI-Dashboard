@@ -21,24 +21,43 @@ export default function AppShell({
   const [activeTab, setActiveTab] = useState<TabId>('status')
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white flex flex-col">
+    <div className="min-h-screen flex flex-col" style={{ backgroundColor: '#080812', color: '#e0e0f0' }}>
       {/* Sticky header */}
-      <div className="sticky top-0 z-30 bg-slate-900 border-b border-slate-800 shadow-lg">
+      <div
+        className="sticky top-0 z-30 shadow-lg"
+        style={{ backgroundColor: '#0e0e22', borderBottom: '1px solid #1a1a35' }}
+      >
         {/* Title bar */}
         <div className="flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-3">
-            <h1 className="text-base font-bold tracking-tight text-white">
+            <h1 className="text-base font-bold tracking-tight" style={{ color: '#e0e0f0' }}>
               Picks AI Pipeline Tracker
             </h1>
             {readOnly && (
-              <span className="text-xs px-2 py-0.5 rounded bg-amber-900/50 text-amber-400 border border-amber-800">
+              <span
+                className="text-xs px-2 py-0.5 rounded"
+                style={{
+                  backgroundColor: '#2a1a00',
+                  color: '#f0c870',
+                  border: '1px solid #40300a',
+                }}
+              >
                 읽기전용
               </span>
             )}
           </div>
           <button
             onClick={onSettingsClick}
-            className="p-2 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
+            className="p-2 rounded-lg transition-colors"
+            style={{ color: '#555570' }}
+            onMouseEnter={e => {
+              ;(e.currentTarget as HTMLElement).style.backgroundColor = '#1a1a35'
+              ;(e.currentTarget as HTMLElement).style.color = '#e0e0f0'
+            }}
+            onMouseLeave={e => {
+              ;(e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'
+              ;(e.currentTarget as HTMLElement).style.color = '#555570'
+            }}
             title="설정"
             aria-label="설정"
           >

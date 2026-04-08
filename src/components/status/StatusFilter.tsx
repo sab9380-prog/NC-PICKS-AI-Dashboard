@@ -16,26 +16,29 @@ const FILTERS: { id: FilterValue; label: string }[] = [
 export default function StatusFilter({ value, onChange, counts }: Props) {
   return (
     <div className="flex gap-1">
-      {FILTERS.map(f => (
-        <button
-          key={f.id}
-          onClick={() => onChange(f.id)}
-          className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-            value === f.id
-              ? 'bg-slate-700 text-white'
-              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
-          }`}
-        >
-          {f.label}
-          <span
-            className={`ml-1.5 text-xs ${
-              value === f.id ? 'text-slate-300' : 'text-slate-500'
-            }`}
+      {FILTERS.map(f => {
+        const isActive = value === f.id
+        return (
+          <button
+            key={f.id}
+            onClick={() => onChange(f.id)}
+            className="px-3 py-1.5 rounded text-sm font-medium transition-colors"
+            style={
+              isActive
+                ? { backgroundColor: '#1a1a35', color: '#e0e0f0', border: '1px solid #333360' }
+                : { backgroundColor: 'transparent', color: '#555570', border: '1px solid transparent' }
+            }
           >
-            {counts[f.id]}
-          </span>
-        </button>
-      ))}
+            {f.label}
+            <span
+              className="ml-1.5 text-xs"
+              style={{ color: isActive ? '#e0e0f0' : '#333350' }}
+            >
+              {counts[f.id]}
+            </span>
+          </button>
+        )
+      })}
     </div>
   )
 }

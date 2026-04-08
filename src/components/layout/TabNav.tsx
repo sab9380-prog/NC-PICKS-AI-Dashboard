@@ -13,20 +13,43 @@ type Props = {
 
 export default function TabNav({ active, onChange }: Props) {
   return (
-    <div className="flex gap-1 px-4 bg-slate-900 border-b border-slate-800">
-      {TABS.map(tab => (
-        <button
-          key={tab.id}
-          onClick={() => onChange(tab.id)}
-          className={`px-5 py-3 text-sm font-medium rounded-t transition-colors ${
-            active === tab.id
-              ? 'bg-slate-700 text-white'
-              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
-          }`}
-        >
-          {tab.label}
-        </button>
-      ))}
+    <div
+      className="flex gap-1 px-4"
+      style={{ borderBottom: '1px solid #1a1a35', backgroundColor: '#0e0e22' }}
+    >
+      {TABS.map(tab => {
+        const isActive = active === tab.id
+        return (
+          <button
+            key={tab.id}
+            onClick={() => onChange(tab.id)}
+            className="px-5 py-3 text-sm font-medium rounded-t transition-colors"
+            style={
+              isActive
+                ? {
+                    backgroundColor: '#1a1a35',
+                    color: '#e0e0f0',
+                    borderBottom: '2px solid #378add',
+                  }
+                : { color: '#555570' }
+            }
+            onMouseEnter={e => {
+              if (!isActive) {
+                ;(e.currentTarget as HTMLElement).style.color = '#e0e0f0'
+                ;(e.currentTarget as HTMLElement).style.backgroundColor = '#12122a'
+              }
+            }}
+            onMouseLeave={e => {
+              if (!isActive) {
+                ;(e.currentTarget as HTMLElement).style.color = '#555570'
+                ;(e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'
+              }
+            }}
+          >
+            {tab.label}
+          </button>
+        )
+      })}
     </div>
   )
 }

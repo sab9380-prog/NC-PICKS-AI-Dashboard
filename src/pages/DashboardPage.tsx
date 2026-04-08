@@ -3,13 +3,12 @@ import { useSystems } from '../hooks/useSystems'
 import { useMembers } from '../hooks/useMembers'
 import { useSnapshots } from '../hooks/useSnapshots'
 import { useAuth } from '../hooks/useAuth'
-import { ZONES } from '../data/zones'
 import { SYSTEMS } from '../data/systems'
 import AppShell from '../components/layout/AppShell'
 import Header from '../components/layout/Header'
 import StageLegend from '../components/status/StageLegend'
 import StatusFilter, { type FilterValue } from '../components/status/StatusFilter'
-import ZoneGroup from '../components/status/ZoneGroup'
+import SystemTable from '../components/status/SystemTable'
 import AlertPanel from '../components/schedule/AlertPanel'
 import RagTable from '../components/schedule/RagTable'
 import GanttChart from '../components/timeline/GanttChart'
@@ -48,28 +47,22 @@ function StatusTab({
   )
 
   return (
-    <div className="p-4 space-y-4">
+    <div className="p-4 space-y-4" style={{ backgroundColor: '#080812' }}>
       {/* Stage legend */}
       <StageLegend />
 
       {/* Filter */}
       <StatusFilter value={filter} onChange={setFilter} counts={counts} />
 
-      {/* Zone groups */}
-      <div>
-        {ZONES.map(zone => (
-          <ZoneGroup
-            key={zone.id}
-            zone={zone}
-            states={states}
-            members={members}
-            snapshots={snapshots}
-            filter={filter}
-            onUpdate={onUpdate}
-            readOnly={readOnly}
-          />
-        ))}
-      </div>
+      {/* System table */}
+      <SystemTable
+        states={states}
+        members={members}
+        snapshots={snapshots}
+        filter={filter}
+        onUpdate={onUpdate}
+        readOnly={readOnly}
+      />
     </div>
   )
 }
