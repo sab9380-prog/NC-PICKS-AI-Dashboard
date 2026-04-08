@@ -26,13 +26,13 @@ export default function StatusFilter({ value, onChange, counts }: Props) {
             style={
               isActive
                 ? { backgroundColor: '#1a1a35', color: '#e0e0f0', border: '1px solid #333360' }
-                : { backgroundColor: 'transparent', color: '#555570', border: '1px solid transparent' }
+                : { backgroundColor: 'transparent', color: '#8888a0', border: '1px solid transparent' }
             }
           >
             {f.label}
             <span
               className="ml-1.5 text-xs"
-              style={{ color: isActive ? '#e0e0f0' : '#333350' }}
+              style={{ color: isActive ? '#e0e0f0' : '#666680' }}
             >
               {counts[f.id]}
             </span>

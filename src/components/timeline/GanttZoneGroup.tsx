@@ -1,6 +1,6 @@
 import { SYSTEMS } from '../../data/systems'
 import { STAGE_MAP } from '../../data/stages'
-import { getSystemScore } from '../../lib/score'
+import { getStageFromScore } from '../../lib/score'
 import { getGanttBar, TIMELINE_MONTHS } from '../../lib/timeline'
 import type { Zone, SystemState, Member } from '../../types'
 
@@ -64,7 +64,7 @@ export default function GanttZoneGroup({
       {zoneSystems.map(sys => {
         const state = states[sys.id] ?? {
           system_id: sys.id,
-          stage: 0,
+          score: 0,
           status: 'normal' as const,
           status_reason: null,
           owner_id: null,
@@ -75,8 +75,8 @@ export default function GanttZoneGroup({
           updated_by: null,
         }
 
-        const score = getSystemScore(state.stage)
-        const stageDef = STAGE_MAP[state.stage]
+        const score = state.score
+        const stageDef = STAGE_MAP[getStageFromScore(state.score)]
         const owner = members.find(m => m.id === state.owner_id)
         const bar = getGanttBar(state.start_month, state.target_month, score)
         const canEdit = !readOnly && !!onEditDates
@@ -108,7 +108,7 @@ export default function GanttZoneGroup({
                 <div className="flex items-center gap-1.5">
                   <span className="text-xs text-slate-500">{stageDef?.name ?? '미착수'}</span>
                   <span className={`text-xs font-bold tabular-nums ${scoreColorClass(score)}`}>
-                    {score}pt
+                    {score}점
                   </span>
                   <span
                     className={`text-xs px-1 py-px rounded border font-medium leading-none ${statusBadgeClass(state.status)}`}

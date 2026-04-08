@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { STAGES } from '../../data/stages'
-import { getSystemScore } from '../../lib/score'
+import { STAGES, STAGE_POINTS } from '../../data/stages'
+import { getStageFromScore } from '../../lib/score'
 import { calcDelta } from '../../hooks/useSnapshots'
 import type { SystemMeta, SystemState, Zone, Member, ScoreSnapshot } from '../../types'
 
@@ -56,10 +56,11 @@ export default function SystemCard({
   const [editingMemo, setEditingMemo] = useState(false)
   const [memoInput, setMemoInput] = useState(state.note ?? '')
 
-  const score = getSystemScore(state.stage)
+  const score = state.score
+  const stageLevel = getStageFromScore(state.score)
   const delta = calcDelta(system.id, score, snapshots)
   const stale = isStale(state.updated_at)
-  const nextStage = STAGES[state.stage + 1] ?? null
+  const nextStage = STAGES[stageLevel + 1] ?? null
 
   function handleStatusToggle() {
     if (readOnly) return
@@ -72,7 +73,7 @@ export default function SystemCard({
 
   function handleStageClick(level: number) {
     if (readOnly) return
-    onUpdate(system.id, { stage: level })
+    onUpdate(system.id, { score: STAGE_POINTS[level] })
   }
 
   function handleOwnerChange(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -195,14 +196,14 @@ export default function SystemCard({
       <div className="w-56 shrink-0 space-y-2">
         <div className="flex gap-1">
           {STAGES.map(stage => {
-            const isCurrent = state.stage === stage.level
-            const isPast = stage.level < state.stage
+            const isCurrent = stageLevel === stage.level
+            const isPast = stage.level < stageLevel
             return (
               <button
                 key={stage.level}
                 onClick={() => handleStageClick(stage.level)}
                 disabled={readOnly}
-                title={`L${stage.level} ${stage.name} (${stage.points}pt)`}
+                title={`L${stage.level} ${stage.name} (${stage.points}점)`}
                 className={`flex-1 py-2 rounded text-xs font-medium transition-all disabled:cursor-default ${
                   isCurrent
                     ? 'border-2 border-blue-500 bg-blue-900/40 text-blue-300'
@@ -217,7 +218,7 @@ export default function SystemCard({
           })}
         </div>
         <div className="text-xs text-slate-400 font-medium">
-          L{state.stage} {STAGES[state.stage]?.name}
+          L{stageLevel} {STAGES[stageLevel]?.name}
         </div>
 
         {/* Next stage criteria */}
@@ -241,7 +242,7 @@ export default function SystemCard({
         <div className={`text-3xl font-bold tabular-nums ${scoreColorClass(score)}`}>
           {score}
         </div>
-        <div className="text-xs text-slate-500">pt</div>
+        <div className="text-xs text-slate-500">점</div>
         {delta !== null && (
           <div
             className={`text-sm font-medium mt-1 ${

@@ -31,7 +31,7 @@ export default function TabNav({ active, onChange }: Props) {
                     color: '#e0e0f0',
                     borderBottom: '2px solid #378add',
                   }
-                : { color: '#555570' }
+                : { color: '#8888a0' }
             }
             onMouseEnter={e => {
               if (!isActive) {
@@ -41,7 +41,7 @@ export default function TabNav({ active, onChange }: Props) {
             }}
             onMouseLeave={e => {
               if (!isActive) {
-                ;(e.currentTarget as HTMLElement).style.color = '#555570'
+                ;(e.currentTarget as HTMLElement).style.color = '#8888a0'
                 ;(e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'
               }
             }}

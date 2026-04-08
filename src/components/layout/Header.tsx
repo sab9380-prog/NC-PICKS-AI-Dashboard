@@ -1,7 +1,7 @@
 import { ZONES } from '../../data/zones'
 import { SYSTEMS } from '../../data/systems'
 import { STAGES } from '../../data/stages'
-import { getTotalScore, getZoneScore } from '../../lib/score'
+import { getTotalScore, getZoneScore, getStageFromScore } from '../../lib/score'
 import type { SystemState, ScoreSnapshot } from '../../types'
 
 type Props = {
@@ -28,7 +28,7 @@ function KpiCard({
         borderTop: `2px solid ${accent}`,
       }}
     >
-      <div className="text-[11px] font-medium" style={{ color: '#555570' }}>
+      <div className="text-[11px] font-medium" style={{ color: '#8888a0' }}>
         {label}
       </div>
       <div className="flex-1">{children}</div>
@@ -72,7 +72,7 @@ function ZoneCard({
         <span className="text-2xl font-bold tabular-nums" style={{ color: '#e0e0f0' }}>
           {score}
         </span>
-        <span className="text-[11px]" style={{ color: '#555570' }}>pt</span>
+        <span className="text-[11px]" style={{ color: '#8888a0' }}>점</span>
       </div>
 
       {/* Progress bar */}
@@ -85,10 +85,10 @@ function ZoneCard({
 
       {/* Bottom: system count + target month */}
       <div className="flex items-center justify-between">
-        <span className="text-[10px]" style={{ color: '#555570' }}>
+        <span className="text-[10px]" style={{ color: '#8888a0' }}>
           {systemCount}개
         </span>
-        <span className="text-[10px]" style={{ color: '#555570' }}>
+        <span className="text-[10px]" style={{ color: '#8888a0' }}>
           {zone.defaultTargetMonth}
         </span>
       </div>
@@ -103,7 +103,7 @@ export default function Header({ states }: Props) {
   // Stage distribution counts
   const stageCounts = new Array(7).fill(0) as number[]
   for (const sys of SYSTEMS) {
-    const stage = states[sys.id]?.stage ?? 0
+    const stage = getStageFromScore(states[sys.id]?.score ?? 0)
     stageCounts[stage] = (stageCounts[stage] ?? 0) + 1
   }
 
@@ -111,7 +111,7 @@ export default function Header({ states }: Props) {
   const stageNames = STAGES.map(s => s.name)
 
   // Count systems at stage >= 3 (도입 이상)
-  const deployedCount = SYSTEMS.filter(sys => (states[sys.id]?.stage ?? 0) >= 3).length
+  const deployedCount = SYSTEMS.filter(sys => getStageFromScore(states[sys.id]?.score ?? 0) >= 3).length
 
   // Value per deployed system (roughly 1억 each, simplified)
   const speedValue = `+약 ${deployedCount}억`
@@ -126,7 +126,7 @@ export default function Header({ states }: Props) {
             <span className="text-3xl font-bold tabular-nums" style={{ color: '#e0e0f0' }}>
               {totalScore}
             </span>
-            <span className="text-sm" style={{ color: '#555570' }}>/ 100</span>
+            <span className="text-sm" style={{ color: '#8888a0' }}>/ 100</span>
           </div>
         </KpiCard>
 
@@ -147,7 +147,7 @@ export default function Header({ states }: Props) {
           <div className="text-2xl font-bold tabular-nums" style={{ color: '#1d9e75' }}>
             {speedValue}
           </div>
-          <div className="text-[10px] mt-0.5" style={{ color: '#555570' }}>
+          <div className="text-[10px] mt-0.5" style={{ color: '#8888a0' }}>
             도입 이상 시스템 {deployedCount}개 기준
           </div>
         </KpiCard>
@@ -157,7 +157,7 @@ export default function Header({ states }: Props) {
           <div className="text-2xl font-bold" style={{ color: '#d85a30' }}>
             +120억
           </div>
-          <div className="text-[10px] mt-0.5" style={{ color: '#555570' }}>
+          <div className="text-[10px] mt-0.5" style={{ color: '#8888a0' }}>
             연간 운영 효율 목표
           </div>
         </KpiCard>

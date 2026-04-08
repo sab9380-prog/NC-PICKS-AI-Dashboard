@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
   getSystemScore,
+  getStageFromScore,
   getZoneScore,
   getTotalScore,
   getScoreColor,
@@ -8,12 +9,13 @@ import {
   getSPIStatus,
   calcDelayDays,
 } from '../lib/score'
+import { STAGE_POINTS } from '../data/stages'
 import type { SystemState } from '../types'
 
 function makeState(overrides: Partial<SystemState> = {}): SystemState {
   return {
     system_id: 's01',
-    stage: 0,
+    score: 0,
     status: 'normal',
     status_reason: null,
     owner_id: null,
@@ -26,26 +28,38 @@ function makeState(overrides: Partial<SystemState> = {}): SystemState {
   }
 }
 
+describe('getStageFromScore', () => {
+  it('returns 0 for score 0', () => {
+    expect(getStageFromScore(0)).toBe(0)
+  })
+  it('returns 3 for score 40 (도입)', () => {
+    expect(getStageFromScore(40)).toBe(3)
+  })
+  it('returns 6 for score 100 (자동화)', () => {
+    expect(getStageFromScore(100)).toBe(6)
+  })
+})
+
 describe('getSystemScore', () => {
-  it('returns 0 for stage 0', () => {
-    expect(getSystemScore(0)).toBe(0)
+  it('returns 0 for score 0', () => {
+    expect(getSystemScore(makeState({ score: STAGE_POINTS[0] }))).toBe(0)
   })
   it('returns 40 for stage 3 (도입)', () => {
-    expect(getSystemScore(3)).toBe(40)
+    expect(getSystemScore(makeState({ score: STAGE_POINTS[3] }))).toBe(40)
   })
   it('returns 100 for stage 6 (자동화)', () => {
-    expect(getSystemScore(6)).toBe(100)
+    expect(getSystemScore(makeState({ score: STAGE_POINTS[6] }))).toBe(100)
   })
 })
 
 describe('getZoneScore', () => {
   it('averages scores for systems in a zone', () => {
     const states: Record<string, SystemState> = {
-      s01: makeState({ system_id: 's01', stage: 3 }),
-      s02: makeState({ system_id: 's02', stage: 4 }),
-      s03: makeState({ system_id: 's03', stage: 1 }),
+      s01: makeState({ system_id: 's01', score: 40 }),
+      s02: makeState({ system_id: 's02', score: 60 }),
     }
-    expect(getZoneScore('01', states)).toBe(37)
+    // zone 01 has s01, s02 → avg = (40+60)/2 = 50
+    expect(getZoneScore('01', states)).toBe(50)
   })
 })
 
@@ -54,7 +68,7 @@ describe('getTotalScore', () => {
     const states: Record<string, SystemState> = {}
     for (let i = 1; i <= 18; i++) {
       const id = `s${String(i).padStart(2, '0')}`
-      states[id] = makeState({ system_id: id, stage: 0 })
+      states[id] = makeState({ system_id: id, score: 0 })
     }
     expect(getTotalScore(states)).toBe(0)
   })
@@ -75,15 +89,15 @@ describe('getScoreColor', () => {
 
 describe('calcSPI', () => {
   it('returns 1.0 before start month', () => {
-    const state = makeState({ start_month: '2026-06', target_month: '2026-12', stage: 0 })
+    const state = makeState({ start_month: '2026-06', target_month: '2026-12', score: 0 })
     expect(calcSPI(state, '2026-04')).toBe(1.0)
   })
   it('calculates SPI correctly mid-project', () => {
-    const state = makeState({ start_month: '2026-01', target_month: '2027-01', stage: 3 })
+    const state = makeState({ start_month: '2026-01', target_month: '2027-01', score: STAGE_POINTS[3] })
     expect(calcSPI(state, '2026-04')).toBeCloseTo(1.6, 1)
   })
   it('returns low SPI for behind-schedule system', () => {
-    const state = makeState({ start_month: '2026-01', target_month: '2026-12', stage: 1 })
+    const state = makeState({ start_month: '2026-01', target_month: '2026-12', score: STAGE_POINTS[1] })
     expect(calcSPI(state, '2026-07')).toBeCloseTo(0.183, 2)
   })
 })
@@ -102,11 +116,11 @@ describe('getSPIStatus', () => {
 
 describe('calcDelayDays', () => {
   it('returns 0 when on or ahead of schedule', () => {
-    const state = makeState({ start_month: '2026-01', target_month: '2027-01', stage: 3 })
+    const state = makeState({ start_month: '2026-01', target_month: '2027-01', score: STAGE_POINTS[3] })
     expect(calcDelayDays(state, '2026-04')).toBe(0)
   })
   it('returns positive days when behind schedule', () => {
-    const state = makeState({ start_month: '2026-01', target_month: '2026-12', stage: 1 })
+    const state = makeState({ start_month: '2026-01', target_month: '2026-12', score: STAGE_POINTS[1] })
     const days = calcDelayDays(state, '2026-07')
     expect(days).toBeGreaterThan(0)
   })

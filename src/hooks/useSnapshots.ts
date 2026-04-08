@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react'
 import { STORAGE_KEYS, loadFromStorage, saveToStorage } from '../lib/storage'
 import { SYSTEMS } from '../data/systems'
-import { getSystemScore } from '../lib/score'
 import type { ScoreSnapshot, SystemState } from '../types'
 
 export function useSnapshots() {
@@ -14,7 +13,7 @@ export function useSnapshots() {
     const newSnaps: ScoreSnapshot[] = SYSTEMS.map((sys, i) => ({
       id: Date.now() + i,
       system_id: sys.id,
-      score: getSystemScore(states[sys.id]?.stage ?? 0),
+      score: states[sys.id]?.score ?? 0,
       snapshot_at: today,
     }))
 

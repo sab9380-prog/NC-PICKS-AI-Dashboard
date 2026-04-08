@@ -1,0 +1,91 @@
+<h2>디자인 톤 & 무드</h2>
+<p class="subtitle">Picks AI Pipeline Tracker의 전체 분위기를 결정합니다</p>
+
+<div class="cards">
+  <!-- Option A -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background: #0f172a; border-radius: 8px; padding: 24px; color: white; font-family: system-ui;">
+        <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+          <div style="background: #1e293b; border-radius: 8px; padding: 16px; flex:1; border-left: 3px solid #3b82f6;">
+            <div style="font-size: 11px; color: #94a3b8; text-transform: uppercase;">전체 점수</div>
+            <div style="font-size: 28px; font-weight: 700; color: #60a5fa;">42.3</div>
+          </div>
+          <div style="background: #1e293b; border-radius: 8px; padding: 16px; flex:1; border-left: 3px solid #10b981;">
+            <div style="font-size: 11px; color: #94a3b8; text-transform: uppercase;">운영 완료</div>
+            <div style="font-size: 28px; font-weight: 700; color: #34d399;">3</div>
+          </div>
+          <div style="background: #1e293b; border-radius: 8px; padding: 16px; flex:1; border-left: 3px solid #f59e0b;">
+            <div style="font-size: 11px; color: #94a3b8; text-transform: uppercase;">개발 진행</div>
+            <div style="font-size: 28px; font-weight: 700; color: #fbbf24;">12</div>
+          </div>
+        </div>
+        <div style="background: #1e293b; border-radius: 6px; height: 8px; overflow: hidden;">
+          <div style="background: linear-gradient(90deg, #3b82f6, #6366f1); width: 42%; height: 100%; border-radius: 6px;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. 다크 모던</h3>
+      <p>어두운 배경, 네온 강조색. 데이터 대시보드 느낌. 숫자가 돋보이고 장시간 모니터링에 눈이 편함. Grafana/Datadog 스타일.</p>
+    </div>
+  </div>
+
+  <!-- Option B -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background: #ffffff; border-radius: 8px; padding: 24px; color: #1e293b; font-family: system-ui; border: 1px solid #e2e8f0;">
+        <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+          <div style="background: #f8fafc; border-radius: 8px; padding: 16px; flex:1; border: 1px solid #e2e8f0;">
+            <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">전체 점수</div>
+            <div style="font-size: 28px; font-weight: 700; color: #1e293b;">42.3</div>
+          </div>
+          <div style="background: #f8fafc; border-radius: 8px; padding: 16px; flex:1; border: 1px solid #e2e8f0;">
+            <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">운영 완료</div>
+            <div style="font-size: 28px; font-weight: 700; color: #16a34a;">3</div>
+          </div>
+          <div style="background: #f8fafc; border-radius: 8px; padding: 16px; flex:1; border: 1px solid #e2e8f0;">
+            <div style="font-size: 11px; color: #64748b; text-transform: uppercase;">개발 진행</div>
+            <div style="font-size: 28px; font-weight: 700; color: #2563eb;">12</div>
+          </div>
+        </div>
+        <div style="background: #e2e8f0; border-radius: 6px; height: 8px; overflow: hidden;">
+          <div style="background: #2563eb; width: 42%; height: 100%; border-radius: 6px;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. 클린 화이트</h3>
+      <p>밝고 깔끔한 배경. 최소한의 장식. 비즈니스 보고서 느낌. 경영진에게 익숙한 스타일. Notion/Linear 느낌.</p>
+    </div>
+  </div>
+
+  <!-- Option C -->
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); border-radius: 8px; padding: 24px; color: white; font-family: system-ui;">
+        <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+          <div style="background: rgba(255,255,255,0.07); backdrop-filter: blur(10px); border-radius: 12px; padding: 16px; flex:1; border: 1px solid rgba(255,255,255,0.1);">
+            <div style="font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase;">전체 점수</div>
+            <div style="font-size: 28px; font-weight: 700; background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">42.3</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.07); backdrop-filter: blur(10px); border-radius: 12px; padding: 16px; flex:1; border: 1px solid rgba(255,255,255,0.1);">
+            <div style="font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase;">운영 완료</div>
+            <div style="font-size: 28px; font-weight: 700; color: #34d399;">3</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.07); backdrop-filter: blur(10px); border-radius: 12px; padding: 16px; flex:1; border: 1px solid rgba(255,255,255,0.1);">
+            <div style="font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase;">개발 진행</div>
+            <div style="font-size: 28px; font-weight: 700; color: #fbbf24;">12</div>
+          </div>
+        </div>
+        <div style="background: rgba(255,255,255,0.1); border-radius: 6px; height: 8px; overflow: hidden;">
+          <div style="background: linear-gradient(90deg, #6366f1, #8b5cf6, #a78bfa); width: 42%; height: 100%; border-radius: 6px;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C. 프리미엄 다크</h3>
+      <p>그라디언트 배경, 글래스모피즘 카드. 세련되고 고급스러운 느낌. 경영진 프레젠테이션에 임팩트. 이랜드 AI 혁신 이미지와 부합.</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,187 @@
+<h2>탭1: 시스템 현황 뷰</h2>
+<p class="subtitle">PM이 단계를 업데이트하고, 관리자가 전체 현황을 필터링하는 핵심 화면</p>
+
+<div class="mockup">
+  <div class="mockup-header">탭1 — 시스템 현황</div>
+  <div class="mockup-body" style="background: #0f172a; padding: 20px; color: white; font-family: system-ui;">
+
+    <!-- 단계 범례 -->
+    <div style="background: #1e293b; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+      <span style="font-size: 11px; color: #64748b; margin-right: 8px;">단계 범례</span>
+      <span style="background: #334155; border-radius: 4px; padding: 3px 10px; font-size: 11px; color: #94a3b8;">0 미착수</span>
+      <span style="background: #334155; border-radius: 4px; padding: 3px 10px; font-size: 11px; color: #94a3b8;">1 기획 <span style="color:#64748b;">10pt</span></span>
+      <span style="background: #334155; border-radius: 4px; padding: 3px 10px; font-size: 11px; color: #94a3b8;">2 개발 <span style="color:#64748b;">25pt</span></span>
+      <span style="background: #334155; border-radius: 4px; padding: 3px 10px; font-size: 11px; color: #94a3b8;">3 도입 <span style="color:#64748b;">40pt</span></span>
+      <span style="background: #334155; border-radius: 4px; padding: 3px 10px; font-size: 11px; color: #94a3b8;">4 활용 <span style="color:#64748b;">60pt</span></span>
+      <span style="background: #334155; border-radius: 4px; padding: 3px 10px; font-size: 11px; color: #94a3b8;">5 최적화 <span style="color:#64748b;">80pt</span></span>
+      <span style="background: #334155; border-radius: 4px; padding: 3px 10px; font-size: 11px; color: #94a3b8;">6 자동화 <span style="color:#64748b;">100pt</span></span>
+    </div>
+
+    <!-- 상태 필터 -->
+    <div style="display: flex; gap: 8px; margin-bottom: 20px;">
+      <button style="background: #3b82f6; color: white; border: none; border-radius: 6px; padding: 6px 16px; font-size: 12px; cursor: pointer;">전체 (18)</button>
+      <button style="background: #1e293b; color: #94a3b8; border: 1px solid #334155; border-radius: 6px; padding: 6px 16px; font-size: 12px; cursor: pointer;">정상 (14)</button>
+      <button style="background: #1e293b; color: #f87171; border: 1px solid #7f1d1d; border-radius: 6px; padding: 6px 16px; font-size: 12px; cursor: pointer;">지연 (2)</button>
+      <button style="background: #1e293b; color: #fbbf24; border: 1px solid #78350f; border-radius: 6px; padding: 6px 16px; font-size: 12px; cursor: pointer;">보류 (2)</button>
+    </div>
+
+    <!-- 구간 1: 역기획 -->
+    <div style="margin-bottom: 24px;">
+      <!-- 구간 헤더 -->
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #f59e0b;">
+        <span style="background: #f59e0b; color: #0f172a; font-weight: 700; font-size: 11px; padding: 2px 8px; border-radius: 4px;">01</span>
+        <span style="font-size: 15px; font-weight: 600;">역기획</span>
+        <span style="font-size: 11px; color: #94a3b8;">AI 85% · 자동롤링</span>
+        <span style="margin-left: auto; font-size: 14px; font-weight: 700; color: #fbbf24;">48pt</span>
+        <span style="font-size: 11px; color: #34d399;">▲3</span>
+      </div>
+
+      <!-- 시스템 카드 1 -->
+      <div style="background: #1e293b; border-radius: 10px; padding: 16px; margin-bottom: 8px; border-left: 4px solid #f59e0b;">
+        <div style="display: flex; align-items: flex-start; gap: 16px;">
+          <!-- 좌: 시스템 정보 -->
+          <div style="min-width: 180px;">
+            <div style="font-size: 14px; font-weight: 600;">TCR 2.0 시뮬레이터</div>
+            <div style="font-size: 11px; color: #64748b; margin-top: 2px;">카테고리 믹스 자동 최적화</div>
+            <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px;">
+              <span style="font-size: 11px; color: #94a3b8;">👤 김재열</span>
+              <span style="background: #7f1d1d; color: #fca5a5; font-size: 10px; padding: 2px 8px; border-radius: 10px;">지연</span>
+            </div>
+            <div style="font-size: 10px; color: #475569; margin-top: 4px;">메모: 외부 API 연동 대기중</div>
+            <div style="font-size: 10px; color: #ef4444; margin-top: 2px;">⚠ 12일 미업데이트</div>
+          </div>
+
+          <!-- 중: 7단계 셀렉터 -->
+          <div style="flex: 1;">
+            <div style="display: flex; gap: 4px;">
+              <div style="flex:1; text-align: center;">
+                <div style="background: #334155; border-radius: 6px; padding: 8px 0; cursor: pointer; border: 2px solid transparent; opacity: 0.5;">
+                  <div style="font-size: 16px; font-weight: 700; color: #64748b;">0</div>
+                  <div style="font-size: 8px; color: #475569;">미착수</div>
+                </div>
+              </div>
+              <div style="flex:1; text-align: center;">
+                <div style="background: #334155; border-radius: 6px; padding: 8px 0; cursor: pointer; border: 2px solid transparent; opacity: 0.5;">
+                  <div style="font-size: 16px; font-weight: 700; color: #94a3b8;">1</div>
+                  <div style="font-size: 8px; color: #475569;">기획</div>
+                </div>
+              </div>
+              <div style="flex:1; text-align: center;">
+                <div style="background: #334155; border-radius: 6px; padding: 8px 0; cursor: pointer; border: 2px solid transparent; opacity: 0.5;">
+                  <div style="font-size: 16px; font-weight: 700; color: #94a3b8;">2</div>
+                  <div style="font-size: 8px; color: #475569;">개발</div>
+                </div>
+              </div>
+              <div style="flex:1; text-align: center;">
+                <div style="background: #1e3a5f; border-radius: 6px; padding: 8px 0; cursor: pointer; border: 2px solid #3b82f6;">
+                  <div style="font-size: 16px; font-weight: 700; color: #60a5fa;">3</div>
+                  <div style="font-size: 8px; color: #60a5fa;">도입</div>
+                </div>
+              </div>
+              <div style="flex:1; text-align: center;">
+                <div style="background: #334155; border-radius: 6px; padding: 8px 0; cursor: pointer; border: 2px solid transparent;">
+                  <div style="font-size: 16px; font-weight: 700; color: #64748b;">4</div>
+                  <div style="font-size: 8px; color: #475569;">활용</div>
+                </div>
+              </div>
+              <div style="flex:1; text-align: center;">
+                <div style="background: #334155; border-radius: 6px; padding: 8px 0; cursor: pointer; border: 2px solid transparent;">
+                  <div style="font-size: 16px; font-weight: 700; color: #64748b;">5</div>
+                  <div style="font-size: 8px; color: #475569;">최적화</div>
+                </div>
+              </div>
+              <div style="flex:1; text-align: center;">
+                <div style="background: #334155; border-radius: 6px; padding: 8px 0; cursor: pointer; border: 2px solid transparent;">
+                  <div style="font-size: 16px; font-weight: 700; color: #64748b;">6</div>
+                  <div style="font-size: 8px; color: #475569;">자동화</div>
+                </div>
+              </div>
+            </div>
+            <!-- 전환 조건 미니 체크리스트 -->
+            <div style="margin-top: 8px; background: #0f172a; border-radius: 6px; padding: 8px 10px; font-size: 10px;">
+              <span style="color: #64748b;">다음 단계(활용) 조건:</span>
+              <span style="color: #34d399; margin-left: 6px;">✓ 자동화율 42%</span>
+              <span style="color: #34d399; margin-left: 6px;">✓ 사용률 85%</span>
+              <span style="color: #f87171; margin-left: 6px;">✗ 시간절감 12%</span>
+            </div>
+          </div>
+
+          <!-- 우: 점수 -->
+          <div style="text-align: right; min-width: 60px;">
+            <div style="font-size: 28px; font-weight: 800; color: #fbbf24;">40</div>
+            <div style="font-size: 10px; color: #34d399;">▲+15</div>
+            <div style="font-size: 10px; color: #64748b;">pt</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 시스템 카드 2 (간략) -->
+      <div style="background: #1e293b; border-radius: 10px; padding: 16px; margin-bottom: 8px; border-left: 4px solid #f59e0b;">
+        <div style="display: flex; align-items: flex-start; gap: 16px;">
+          <div style="min-width: 180px;">
+            <div style="font-size: 14px; font-weight: 600;">12P 역기획판</div>
+            <div style="font-size: 11px; color: #64748b; margin-top: 2px;">OTB 실시간 자동 롤링</div>
+            <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px;">
+              <span style="font-size: 11px; color: #94a3b8;">👤 박민수</span>
+              <span style="background: #14532d; color: #86efac; font-size: 10px; padding: 2px 8px; border-radius: 10px;">정상</span>
+            </div>
+          </div>
+          <div style="flex: 1;">
+            <div style="display: flex; gap: 4px;">
+              <div style="flex:1;text-align:center;"><div style="background:#334155;border-radius:6px;padding:8px 0;opacity:0.5;"><div style="font-size:16px;font-weight:700;color:#64748b;">0</div></div></div>
+              <div style="flex:1;text-align:center;"><div style="background:#334155;border-radius:6px;padding:8px 0;opacity:0.5;"><div style="font-size:16px;font-weight:700;color:#94a3b8;">1</div></div></div>
+              <div style="flex:1;text-align:center;"><div style="background:#334155;border-radius:6px;padding:8px 0;opacity:0.5;"><div style="font-size:16px;font-weight:700;color:#94a3b8;">2</div></div></div>
+              <div style="flex:1;text-align:center;"><div style="background:#334155;border-radius:6px;padding:8px 0;opacity:0.5;"><div style="font-size:16px;font-weight:700;color:#94a3b8;">3</div></div></div>
+              <div style="flex:1;text-align:center;"><div style="background:#1e3a5f;border-radius:6px;padding:8px 0;border:2px solid #3b82f6;"><div style="font-size:16px;font-weight:700;color:#60a5fa;">4</div></div></div>
+              <div style="flex:1;text-align:center;"><div style="background:#334155;border-radius:6px;padding:8px 0;"><div style="font-size:16px;font-weight:700;color:#64748b;">5</div></div></div>
+              <div style="flex:1;text-align:center;"><div style="background:#334155;border-radius:6px;padding:8px 0;"><div style="font-size:16px;font-weight:700;color:#64748b;">6</div></div></div>
+            </div>
+          </div>
+          <div style="text-align: right; min-width: 60px;">
+            <div style="font-size: 28px; font-weight: 800; color: #fbbf24;">60</div>
+            <div style="font-size: 10px; color: #34d399;">▲+20</div>
+            <div style="font-size: 10px; color: #64748b;">pt</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 구간 2: 협상 (접힌 상태) -->
+    <div style="background: #1e293b; border-radius: 8px; padding: 12px 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; cursor: pointer; border-left: 4px solid #8b5cf6;">
+      <span style="background: #8b5cf6; color: white; font-weight: 700; font-size: 11px; padding: 2px 8px; border-radius: 4px;">02</span>
+      <span style="font-size: 14px; font-weight: 600;">협상</span>
+      <span style="font-size: 11px; color: #94a3b8;">AI 50% · 당일</span>
+      <span style="font-size: 11px; color: #64748b;">시스템 3개</span>
+      <span style="margin-left: auto; font-size: 14px; font-weight: 700; color: #ef4444;">33pt</span>
+      <span style="font-size: 11px; color: #f87171;">▼2</span>
+      <span style="color: #64748b; font-size: 14px;">▸</span>
+    </div>
+
+    <!-- 구간 3~6 (접힌 상태 표시) -->
+    <div style="background: #1e293b; border-radius: 8px; padding: 12px 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; cursor: pointer; border-left: 4px solid #06b6d4;">
+      <span style="background: #06b6d4; color: white; font-weight: 700; font-size: 11px; padding: 2px 8px; border-radius: 4px;">03</span>
+      <span style="font-size: 14px; font-weight: 600;">의사결정</span>
+      <span style="font-size: 11px; color: #94a3b8;">AI 90% · 당일</span>
+      <span style="font-size: 11px; color: #64748b;">시스템 2개</span>
+      <span style="margin-left: auto; font-size: 14px; font-weight: 700; color: #34d399;">78pt</span>
+      <span style="font-size: 11px; color: #34d399;">▲12</span>
+      <span style="color: #64748b; font-size: 14px;">▸</span>
+    </div>
+
+    <div style="text-align: center; color: #475569; font-size: 12px; padding: 8px;">
+      ... 구간 04~06 동일 패턴 ...
+    </div>
+
+  </div>
+</div>
+
+<div class="section" style="margin-top: 24px;">
+  <h3>핵심 UX 포인트</h3>
+  <ul>
+    <li><strong>단계 셀렉터</strong> — 7개 버튼 클릭으로 즉시 변경. 현재 단계는 파란 테두리로 강조. 이전 단계는 흐리게</li>
+    <li><strong>전환 조건 체크리스트</strong> — 카드 하단에 "다음 단계 조건" 자동 표시. 충족/미충족 시각화. 미충족 시에도 수동 승격 가능 (경고 표시)</li>
+    <li><strong>방치 시그널</strong> — "12일 미업데이트" 빨간 경고</li>
+    <li><strong>구간 접기/펼치기</strong> — 기본 전체 펼침, 클릭으로 접기 가능. 경영진은 접힌 상태에서 구간 점수만 빠르게 스캔</li>
+    <li><strong>상태 배지</strong> — 정상(초록)/지연(빨강)/보류(노랑). 지연·보류 전환 시 사유 입력 팝업</li>
+  </ul>
+</div>

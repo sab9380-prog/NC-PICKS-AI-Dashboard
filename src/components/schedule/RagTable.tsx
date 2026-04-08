@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { SYSTEMS } from '../../data/systems'
 import { ZONE_MAP } from '../../data/zones'
 import { STAGE_MAP } from '../../data/stages'
-import { getSystemScore, calcSPI, getSPIStatus, calcExpectedProgress } from '../../lib/score'
+import { getStageFromScore, calcSPI, getSPIStatus, calcExpectedProgress } from '../../lib/score'
 import { calcDelta } from '../../hooks/useSnapshots'
 import type { SystemState, Member, ScoreSnapshot } from '../../types'
 
@@ -72,7 +72,7 @@ export default function RagTable({ states, members, snapshots, now }: Props) {
   const rows: RowData[] = SYSTEMS.map(sys => {
     const state = states[sys.id] ?? {
       system_id: sys.id,
-      stage: 0,
+      score: 0,
       status: 'normal' as const,
       status_reason: null,
       owner_id: null,
@@ -83,13 +83,13 @@ export default function RagTable({ states, members, snapshots, now }: Props) {
       updated_by: null,
     }
     const zone = ZONE_MAP[sys.zoneId]
-    const score = getSystemScore(state.stage)
+    const score = state.score
     const spi = calcSPI(state, now)
     const expected = calcExpectedProgress(state.start_month, state.target_month, now)
     const expectedPct = Math.round(expected * 100)
     const delta = calcDelta(sys.id, score, snapshots)
     const owner = members.find(m => m.id === state.owner_id)
-    const stageDef = STAGE_MAP[state.stage]
+    const stageDef = STAGE_MAP[getStageFromScore(state.score)]
 
     return {
       id: sys.id,
@@ -160,7 +160,7 @@ export default function RagTable({ states, members, snapshots, now }: Props) {
           >
             {row.score}
           </span>
-          <span className="text-xs text-slate-600">pt</span>
+          <span className="text-xs text-slate-600">점</span>
         </td>
 
         {/* Plan vs Actual bar (hidden on tablet <1024px) */}

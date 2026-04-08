@@ -76,7 +76,7 @@ export default function ZoneGroup({
         >
           {zoneScore}
         </span>
-        <span className="text-xs text-slate-500">pt</span>
+        <span className="text-xs text-slate-500">점</span>
       </button>
 
       {/* System cards */}

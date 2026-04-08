@@ -1,4 +1,4 @@
-export type ZoneId = '01' | '02' | '03' | '04' | '05' | '06'
+export type ZoneId = '01' | '02' | '03' | '04' | '05'
 
 export type Zone = {
   id: ZoneId
@@ -14,11 +14,12 @@ export type SystemMeta = {
   zoneId: ZoneId
   name: string
   desc: string
+  initialScore: number
 }
 
 export type SystemState = {
   system_id: string
-  stage: number
+  score: number
   status: 'normal' | 'delay' | 'hold'
   status_reason: string | null
   owner_id: string | null

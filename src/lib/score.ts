@@ -2,20 +2,29 @@ import { STAGE_POINTS } from '../data/stages'
 import { SYSTEMS } from '../data/systems'
 import type { SystemState, SPIStatus } from '../types'
 
-export function getSystemScore(stage: number): number {
-  return STAGE_POINTS[stage] ?? 0
+/** 점수(0~100)에서 해당하는 단계 레벨(0~6)을 역산 */
+export function getStageFromScore(score: number): number {
+  for (let i = STAGE_POINTS.length - 1; i >= 0; i--) {
+    if (score >= STAGE_POINTS[i]) return i
+  }
+  return 0
+}
+
+/** 시스템의 점수를 직접 반환 */
+export function getSystemScore(state: SystemState): number {
+  return state.score
 }
 
 export function getZoneScore(zoneId: string, states: Record<string, SystemState>): number {
   const zoneSystems = SYSTEMS.filter(s => s.zoneId === zoneId)
   if (zoneSystems.length === 0) return 0
-  const total = zoneSystems.reduce((sum, s) => sum + getSystemScore(states[s.id]?.stage ?? 0), 0)
+  const total = zoneSystems.reduce((sum, s) => sum + (states[s.id]?.score ?? 0), 0)
   return Math.round(total / zoneSystems.length)
 }
 
 export function getTotalScore(states: Record<string, SystemState>): number {
   if (SYSTEMS.length === 0) return 0
-  const total = SYSTEMS.reduce((sum, s) => sum + getSystemScore(states[s.id]?.stage ?? 0), 0)
+  const total = SYSTEMS.reduce((sum, s) => sum + (states[s.id]?.score ?? 0), 0)
   return Math.round(total / SYSTEMS.length)
 }
 
@@ -48,7 +57,7 @@ export function calcSPI(state: SystemState, now: string): number {
   if (current <= start) return 1.0
   const elapsed = calcElapsedRatio(state.start_month, state.target_month, now)
   if (elapsed <= 0) return 1.0
-  const progress = getSystemScore(state.stage) / 100
+  const progress = state.score / 100
   return progress / elapsed
 }
 
@@ -64,7 +73,7 @@ export function calcDelayDays(state: SystemState, now: string): number {
   const start = monthToIndex(state.start_month)
   const target = monthToIndex(state.target_month)
   const totalDuration = (target - start) * 30
-  const progress = getSystemScore(state.stage) / 100
+  const progress = state.score / 100
   const expected = calcExpectedProgress(state.start_month, state.target_month, now)
   return Math.round((expected - progress) * totalDuration)
 }

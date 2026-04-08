@@ -1,7 +1,7 @@
 import { SYSTEMS } from '../../data/systems'
 import { ZONE_MAP } from '../../data/zones'
 import { STAGE_MAP } from '../../data/stages'
-import { getSystemScore, calcSPI, getSPIStatus, calcDelayDays, calcExpectedProgress } from '../../lib/score'
+import { getStageFromScore, calcSPI, getSPIStatus, calcDelayDays, calcExpectedProgress } from '../../lib/score'
 import type { SystemState, Member } from '../../types'
 
 type Props = {
@@ -51,13 +51,13 @@ export default function AlertPanel({ states, members, now }: Props) {
 
       {atRisk.map(({ sys, state, spi }) => {
         const zone = ZONE_MAP[sys.zoneId]
-        const score = getSystemScore(state.stage)
+        const score = state.score
         const expected = calcExpectedProgress(state.start_month, state.target_month, now)
         const expectedPct = Math.round(expected * 100)
         const actualPct = score
         const gap = expectedPct - actualPct
         const delayDays = calcDelayDays(state, now)
-        const stageDef = STAGE_MAP[state.stage]
+        const stageDef = STAGE_MAP[getStageFromScore(state.score)]
         const owner = members.find(m => m.id === state.owner_id)
         const status = getSPIStatus(spi)
 
@@ -112,7 +112,7 @@ export default function AlertPanel({ states, members, now }: Props) {
 
             {/* Description */}
             <div className="text-xs text-slate-400">
-              현재 {stageDef?.name ?? '미착수'}({score}pt) · 목표{' '}
+              현재 {stageDef?.name ?? '미착수'}({score}점) · 목표{' '}
               <span className="text-white font-medium">{state.target_month}</span>까지 자동화 도달 필요
             </div>
 

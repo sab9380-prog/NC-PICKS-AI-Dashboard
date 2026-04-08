@@ -10,7 +10,7 @@ function createDefaultStates(): Record<string, SystemState> {
       sys.id,
       {
         system_id: sys.id,
-        stage: 0,
+        score: sys.initialScore,
         status: 'normal' as const,
         status_reason: null,
         owner_id: null,
