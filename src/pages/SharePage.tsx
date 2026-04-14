@@ -1,6 +1,5 @@
 import { useParams } from 'react-router-dom'
 import { useSystems } from '../hooks/useSystems'
-import { useMembers } from '../hooks/useMembers'
 import { useSnapshots } from '../hooks/useSnapshots'
 import { STORAGE_KEYS, loadFromStorage } from '../lib/storage'
 import AppShell from '../components/layout/AppShell'
@@ -14,7 +13,7 @@ function InvalidToken() {
         <div className="text-4xl">ð</div>
         <h1 className="text-xl font-bold">ì í¨íì§ ìì ê³µì  ë§í¬</h1>
         <p className="text-slate-400 text-sm">
-          ì´ ë§ï¼¬ë ì¡´ì¬íì§ ìê±°ë ë¹íì±íëììµëë¤.
+          ì´ ë§í¬ë ì¡´ì¬íì§ ìê±°ë ë¹íì±íëììµëë¤.
         </p>
       </div>
     </div>
@@ -24,7 +23,6 @@ function InvalidToken() {
 export default function SharePage() {
   const { token } = useParams<{ token: string }>()
   const { states } = useSystems()
-  const { activeMembers } = useMembers()
   const { latestSnapshots } = useSnapshots()
 
   // Validate token
