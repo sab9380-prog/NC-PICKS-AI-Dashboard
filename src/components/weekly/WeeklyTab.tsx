@@ -189,7 +189,7 @@ export default function WeeklyTab({ snapshots, states, members }: Props) {
         {/* Needs Attention */}
         <div style={highlightCardStyle}>
           <h3 style={{ fontSize: 17, fontWeight: 800, color: C.red, marginBottom: 14, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            ì§ë ì ê²ì´ íìí ìì¤í
+            ì§ë ì ê²ì´ íìí ìì¤í
             {data.needsAttention.length > 3 && (
               <span style={{ fontSize: 13, fontWeight: 500, color: C.blue, cursor: 'pointer' }} onClick={() => setShowWarnModal(true)}>ì ì²´ ë³´ê¸° â</span>
             )}
@@ -250,7 +250,7 @@ export default function WeeklyTab({ snapshots, states, members }: Props) {
           <thead>
             <tr>
               <th style={{ ...thStyle, minWidth: 280 }}>ìì¤í</th>
-              <th style={{ ...thStyle, minWidth: 110 }}>í´ê²°ì¬</th>
+              <th style={{ ...thStyle, minWidth: 110 }}>í´ê²°ì¢¬</th>
               <th style={{ ...thStyle, minWidth: 120, textAlign: 'center' }}>íì¬ ì ì</th>
               <th style={{ ...thStyle, minWidth: 180, textAlign: 'center' }}>ë¨ê³(ë ë²¨)</th>
               {tableWeeks.map(w => (
@@ -471,26 +471,28 @@ function ZoneSection({
                     margin: '-8px -4px',
                     background: score === 0 ? 'transparent' : getHeatBg(score),
                   }}>
-                    <span style={{
-                      fontSize: 26,
-                      fontWeight: 900,
-                      color: score === 0 ? '#2a2a40' : C.white,
-                      lineHeight: 1,
-                    }}>
-                      {score}
-                    </span>
-                    {cellDelta !== null && cellDelta !== 0 && (
-                      <DeltaSpan delta={cellDelta} style={{ fontSize: 18, fontWeight: 900 }} />
-                    )}
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
+                      <span style={{
+                        fontSize: 26,
+                        fontWeight: 900,
+                        color: score === 0 ? '#2a2a40' : C.white,
+                        lineHeight: 1,
+                      }}>
+                        {score}
+                      </span>
+                      {cellDelta !== null && cellDelta !== 0 && (
+                        <DeltaSpan delta={cellDelta} style={{ fontSize: 16, fontWeight: 900 }} />
+                      )}
+                    </div>
                     {cellStageChanged && (
                       <span style={{
-                        fontSize: 15,
+                        fontSize: 13,
                         fontWeight: 800,
                         color: C.green,
                         background: 'rgba(74,222,128,0.15)',
-                        padding: '4px 10px',
+                        padding: '3px 8px',
                         borderRadius: 6,
-                        marginTop: 4,
+                        marginTop: 2,
                       }}>
                         {getStageName(prevS!)}{' â '}{getStageName(score)}
                       </span>
