@@ -110,7 +110,11 @@ export default function WeeklyTab({ snapshots, states, members }: Props) {
             <span style={{ fontSize: 34, fontWeight: 900, color: C.white, lineHeight: 1 }}>
               {data.totalAvg}
             </span>
-            <DeltaSpan delta={data.totalAvgDelta} style={{ fontSize: 16 }} />
+            <DeltaSpan delta={data.totalAvgDelta} style={{ fontSize: 20, fontWeight: 900 }} />
+          </div>
+          <div style={{ fontSize: 14, color: C.muted, marginTop: 12, lineHeight: '1.8' }}>
+            <div>1. 일부 직원만 AI 진도 나감 (전 직원 AI 시스템 나눠맡기 안 함)</div>
+            <div>2. 이노플과 R&R 합의: 시스템 고도화 및 시스템 간 연동, 보안성 강화</div>
           </div>
           <div style={{ fontSize: 13, color: C.blue, marginTop: 8 }}>주차별 히스토리 보기 →</div>
         </div>
@@ -126,7 +130,7 @@ export default function WeeklyTab({ snapshots, states, members }: Props) {
           </div>
           <div style={{ fontSize: 15, color: C.muted, marginTop: 10, lineHeight: '1.7' }}>
             {data.stageChanges.slice(0, 4).map(sc => (
-              <div key={sc.systemId}>{sc.name} → {sc.toStage}</div>
+              <div key={sc.systemId}>{sc.name}: {sc.toStage}</div>
             ))}
           </div>
         </div>
@@ -156,7 +160,7 @@ export default function WeeklyTab({ snapshots, states, members }: Props) {
         {/* Top Gainers */}
         <div style={highlightCardStyle}>
           <h3 style={{ fontSize: 17, fontWeight: 800, color: C.green, marginBottom: 14, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            이번 주 크게 전진한 시스템
+            이번 주 전진한 시스템
             {data.topGainers.length > 3 && (
               <span style={{ fontSize: 13, fontWeight: 500, color: C.blue, cursor: 'pointer' }} onClick={() => setShowGoodModal(true)}>전체 보기 →</span>
             )}
@@ -170,7 +174,7 @@ export default function WeeklyTab({ snapshots, states, members }: Props) {
                 onMouseLeave={e => { (e.target as HTMLElement).style.color = C.white }}
               >
                 {g.name}{' '}
-                <span style={{ color: C.green, fontSize: 15 }}>
+                <span style={{ color: C.green, fontSize: 17, fontWeight: 800 }}>
                   +{g.delta}점{g.fromStage !== g.toStage ? `, ${g.fromStage}→${g.toStage}` : ''}
                 </span>
               </div>
@@ -218,22 +222,26 @@ export default function WeeklyTab({ snapshots, states, members }: Props) {
               <div style={{ fontSize: 16, color: C.muted, fontWeight: 600, marginBottom: 8 }}>{zone.name}</div>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
                 <span style={{ fontSize: 34, fontWeight: 900, color: C.white, lineHeight: 1 }}>{za?.avg ?? 0}</span>
-                <DeltaSpan delta={za?.delta ?? null} style={{ fontSize: 16, marginLeft: 10 }} />
+                <DeltaSpan delta={za?.delta ?? null} style={{ fontSize: 20, fontWeight: 900, marginLeft: 10 }} />
               </div>
             </div>
           )
         })}
       </div>
 
-      {/* Legend */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, fontSize: 14, color: C.dim }}>
-        <span>0점</span>
-        <div style={{ display: 'flex', gap: 3 }}>
-          {[0.07, 0.18, 0.32, 0.48, 0.64, 0.80].map(opacity => (
-            <div key={opacity} style={{ width: 28, height: 16, borderRadius: 3, background: `rgba(55,138,221,${opacity})` }} />
-          ))}
-        </div>
-        <span>100점</span>
+      {/* Legend with stage index */}
+      <div style={{ display: 'flex', alignItems: 'flex-end', gap: 2, marginBottom: 16, fontSize: 12, color: C.dim }}>
+        {STAGES.map((stage, i) => {
+          const nextPts = i < STAGES.length - 1 ? STAGES[i + 1].points : 100
+          const widthRatio = (nextPts - stage.points)
+          return (
+            <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: widthRatio }}>
+              <span style={{ fontSize: 11, color: C.muted, marginBottom: 3, whiteSpace: 'nowrap' }}>L{stage.level} {stage.name}</span>
+              <div style={{ width: '100%', height: 14, borderRadius: 3, background: `rgba(55,138,221,${0.07 + i * 0.14})` }} />
+              <span style={{ fontSize: 11, color: C.dim, marginTop: 2 }}>{stage.points}점</span>
+            </div>
+          )
+        })}
       </div>
 
       {/* Heatmap Table */}
@@ -301,7 +309,7 @@ export default function WeeklyTab({ snapshots, states, members }: Props) {
 
       {showGoodModal && (
         <ModalOverlay onClose={() => setShowGoodModal(false)}>
-          <div style={{ fontSize: 26, fontWeight: 900, color: C.green, marginBottom: 28 }}>이번 주 크게 전진한 시스템 — 전체</div>
+          <div style={{ fontSize: 26, fontWeight: 900, color: C.green, marginBottom: 28 }}>이번 주 전진한 시스템 — 전체</div>
           <ul style={{ listStyle: 'none', padding: 0 }}>
             {data.topGainers.map(g => (
               <li key={g.systemId} style={{ display: 'flex', gap: 20, padding: '20px 0', borderBottom: `1px solid ${C.border}` }}>
@@ -412,15 +420,11 @@ function ZoneSection({
             <td style={{ ...tdStyle, textAlign: 'center' }}>
               <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 8 }}>
                 <span style={{ fontSize: 34, fontWeight: 900, color: C.white, lineHeight: 1 }}>{curScore}</span>
-                <DeltaSpan delta={delta} style={{ fontSize: 16 }} />
+                <DeltaSpan delta={delta} style={{ fontSize: 20, fontWeight: 900 }} />
               </div>
             </td>
             <td style={{ ...tdStyle, textAlign: 'center' }}>
               <span style={{ fontSize: 18, fontWeight: 800, color: C.white }}>{getStageLabel(curScore)}</span>
-              <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 6, marginTop: 4 }}>
-                <span style={{ fontSize: 16, fontWeight: 700, color: C.muted }}>{curScore}점</span>
-                <DeltaSpan delta={delta} style={{ fontSize: 15 }} />
-              </div>
             </td>
             {tableWeeks.map(w => {
               if (w === 'future') {
@@ -476,7 +480,7 @@ function ZoneSection({
                       {score}
                     </span>
                     {cellDelta !== null && cellDelta !== 0 && (
-                      <DeltaSpan delta={cellDelta} style={{ fontSize: 15 }} />
+                      <DeltaSpan delta={cellDelta} style={{ fontSize: 18, fontWeight: 900 }} />
                     )}
                     {cellStageChanged && (
                       <span style={{
@@ -569,7 +573,7 @@ const labelStyle: React.CSSProperties = {
 }
 
 const thStyle: React.CSSProperties = {
-  background: '#0a0a1a',
+  background: '#0e0e22',
   color: C.muted,
   fontWeight: 700,
   textAlign: 'left',
