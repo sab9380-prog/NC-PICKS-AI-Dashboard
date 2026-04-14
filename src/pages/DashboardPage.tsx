@@ -9,8 +9,6 @@ import Header from '../components/layout/Header'
 import StageLegend from '../components/status/StageLegend'
 import StatusFilter, { type FilterValue } from '../components/status/StatusFilter'
 import SystemTable from '../components/status/SystemTable'
-import AlertPanel from '../components/schedule/AlertPanel'
-import RagTable from '../components/schedule/RagTable'
 import GanttChart from '../components/timeline/GanttChart'
 import AdminPanel from '../components/admin/AdminPanel'
 import WeeklyTab from '../components/weekly/WeeklyTab'
@@ -64,23 +62,6 @@ function StatusTab({
         onUpdate={onUpdate}
         readOnly={readOnly}
       />
-    </div>
-  )
-}
-
-function ScheduleTab({
-  states,
-  members,
-  snapshots,
-}: {
-  states: ReturnType<typeof useSystems>['states']
-  members: ReturnType<typeof useMembers>['members']
-  snapshots: ReturnType<typeof useSnapshots>['latestSnapshots']
-}) {
-  return (
-    <div className="space-y-0">
-      <AlertPanel states={states} members={members} now={NOW} />
-      <RagTable states={states} members={members} snapshots={snapshots} now={NOW} />
     </div>
   )
 }
@@ -151,13 +132,6 @@ export default function DashboardPage() {
             setFilter={setFilter}
             onUpdate={updateSystem}
             readOnly={readOnly}
-          />
-        }
-        scheduleTab={
-          <ScheduleTab
-            states={states}
-            members={activeMembers}
-            snapshots={latestSnapshots}
           />
         }
         timelineTab={
