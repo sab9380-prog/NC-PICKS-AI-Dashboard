@@ -5,7 +5,6 @@ type Props = {
   header: ReactNode
   statusTab: ReactNode
   weeklyTab: ReactNode
-  scheduleTab: ReactNode
   timelineTab: ReactNode
   onSettingsClick: () => void
   readOnly?: boolean
@@ -15,7 +14,6 @@ export default function AppShell({
   header,
   statusTab,
   weeklyTab,
-  scheduleTab,
   timelineTab,
   onSettingsClick,
   readOnly: _readOnly = false,
@@ -69,7 +67,6 @@ export default function AppShell({
         {/* Tab content */}
         {activeTab === 'status' && statusTab}
         {activeTab === 'weekly' && weeklyTab}
-        {activeTab === 'schedule' && scheduleTab}
         {activeTab === 'timeline' && timelineTab}
       </main>
     </div>
