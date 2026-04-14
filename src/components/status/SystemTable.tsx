@@ -15,18 +15,18 @@ type Props = {
   readOnly?: boolean
 }
 
-// ── Stage badge styles ────────────────────────────────────────────────────────
+// ââ Stage badge styles ââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 const STAGE_BADGE: { bg: string; text: string }[] = [
-  { bg: '#1a1a2a', text: '#7777a0' },  // L0 미착수
-  { bg: '#1e2a50', text: '#85b7eb' },  // L1 기획
-  { bg: '#1a3070', text: '#7070d0' },  // L2 개발
-  { bg: '#0a2a40', text: '#5080c0' },  // L3 도입
-  { bg: '#2a1a00', text: '#f0c870' },  // L4 활용
-  { bg: '#1a0a2a', text: '#c4b8f8' },  // L5 최적화
-  { bg: '#0a2a14', text: '#5dcaa5' },  // L6 자동화
+  { bg: '#1a1a2a', text: '#7777a0' },  // L0 ë¯¸ì°©ì
+  { bg: '#1e2a50', text: '#85b7eb' },  // L1 ê¸°í
+  { bg: '#1a3070', text: '#7070d0' },  // L2 ê°ë°
+  { bg: '#0a2a40', text: '#5080c0' },  // L3 ëì
+  { bg: '#2a1a00', text: '#f0c870' },  // L4 íì©
+  { bg: '#1a0a2a', text: '#c4b8f8' },  // L5 ìµì í
+  { bg: '#0a2a14', text: '#5dcaa5' },  // L6 ìëí
 ]
 
-// ── Score Ring SVG ────────────────────────────────────────────────────────────
+// ââ Score Ring SVG ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 function ScoreRing({ score, size = 44, stroke = 3 }: { score: number; size?: number; stroke?: number }) {
   const radius = (size - stroke) / 2
   const circumference = 2 * Math.PI * radius
@@ -51,7 +51,7 @@ function nextStatus(current: string): 'normal' | 'delay' | 'hold' {
   return 'normal'
 }
 
-// ── Main Component ────────────────────────────────────────────────────────────
+// ââ Main Component ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 export default function SystemTable({ states, members, snapshots: _snapshots, filter, onUpdate, readOnly = false }: Props) {
   const [editingOwner, setEditingOwner] = useState<string | null>(null)
 
@@ -91,28 +91,28 @@ export default function SystemTable({ states, members, snapshots: _snapshots, fi
               style={{ backgroundColor: '#0e0e22', border: '1px solid #1a1a35', borderLeft: `3px solid ${zone.color}` }}
             >
               <span className="text-sm font-semibold" style={{ color: '#e0e0f0' }}>{zone.name}</span>
-              <span className="text-base font-bold tabular-nums" style={{ color: '#e0e0f0' }}>{zoneScore}점</span>
+              <span className="text-base font-bold tabular-nums" style={{ color: '#e0e0f0' }}>{zoneScore}ì </span>
               <span className="text-xs" style={{ color: '#8888a0' }}>AI {zone.ai_pct}%</span>
-              <span className="text-xs" style={{ color: '#8888a0' }}>{filtered.length}개</span>
+              <span className="text-xs" style={{ color: '#8888a0' }}>{filtered.length}ê°</span>
             </div>
 
             {/* Column header */}
             <div
               className="grid gap-0 px-4 py-1.5 text-[10px] uppercase tracking-wider"
               style={{
-                gridTemplateColumns: '56px 1fr 280px 70px 56px 64px', gap: '0 12px',
+                gridTemplateColumns: '1fr 80px 56px 80px 280px 56px', gap: '0 12px',
                 backgroundColor: '#0a0a18',
                 borderLeft: '1px solid #1a1a35',
                 borderRight: '1px solid #1a1a35',
                 color: '#666680',
               }}
             >
-              <div></div>
-              <div>시스템</div>
-              <div className="text-center">단계 선택</div>
-              <div className="text-center">현재 단계</div>
-              <div className="text-center">상태</div>
-              <div className="text-right">담당자</div>
+              <div>ì ëª©</div>
+              <div>í´ê²°ì¬</div>
+              <div className="text-center">ì ì</div>
+              <div className="text-center">ë¨ê³</div>
+              <div className="text-center">ë¨ê³ ì í</div>
+              <div className="text-center">ìí</div>
             </div>
 
             {/* System rows */}
@@ -133,21 +133,17 @@ export default function SystemTable({ states, members, snapshots: _snapshots, fi
                     key={sys.id}
                     className="grid items-center gap-0 px-4 py-2.5 transition-colors"
                     style={{
-                      gridTemplateColumns: '56px 1fr 280px 70px 56px 64px', gap: '0 12px',
+                      gridTemplateColumns: '1fr 80px 56px 80px 280px 56px', gap: '0 12px',
                       backgroundColor: '#0e0e22',
                       borderBottom: isLast ? 'none' : '1px solid #1a1a35',
                     }}
                     onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#12122a')}
                     onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#0e0e22')}
                   >
-                    {/* Score ring */}
-                    <div><ScoreRing score={score} /></div>
-
-                    {/* System name + desc */}
+                    {/* 1. ì ëª© (System name + desc + progress bar) */}
                     <div className="min-w-0 pr-3">
                       <div className="font-semibold text-sm truncate" style={{ color: '#e0e0f0' }}>{sys.name}</div>
                       <div className="text-[10px] truncate mt-0.5" style={{ color: '#8888a0' }}>{sys.desc}</div>
-                      {/* Mini progress bar */}
                       <div className="h-1 rounded-full mt-1.5 overflow-hidden" style={{ backgroundColor: '#1a1a35' }}>
                         <div className="h-full rounded-full" style={{
                           width: `${score}%`,
@@ -156,7 +152,46 @@ export default function SystemTable({ states, members, snapshots: _snapshots, fi
                       </div>
                     </div>
 
-                    {/* Inline stage selector — 7 buttons */}
+                    {/* 2. í´ê²°ì¬ (Owner) */}
+                    <div className="text-xs" onClick={e => e.stopPropagation()}>
+                      {editingOwner === sys.id ? (
+                        <select
+                          autoFocus
+                          value={state.owner_id ?? ''}
+                          onChange={e => handleOwnerChange(sys.id, e.target.value)}
+                          onBlur={() => setEditingOwner(null)}
+                          className="w-full rounded px-1 py-0.5 text-xs focus:outline-none"
+                          style={{ backgroundColor: '#1a1a35', color: '#e0e0f0', border: '1px solid #333360' }}
+                        >
+                          <option value="">ë¯¸ì§ì </option>
+                          {members.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
+                        </select>
+                      ) : (
+                        <button
+                          onClick={() => !readOnly && setEditingOwner(sys.id)}
+                          disabled={readOnly}
+                          className="hover:opacity-80 transition-opacity"
+                          style={{ color: ownerNames ? '#e0e0f0' : '#8888a0' }}
+                        >
+                          {ownerNames || 'ë¯¸ì§ì '}
+                        </button>
+                      )}
+                    </div>
+
+                    {/* 3. ì ì (Score ring) */}
+                    <div><ScoreRing score={score} /></div>
+
+                    {/* 4. ë¨ê³ (Current stage badge) */}
+                    <div className="text-center">
+                      <span
+                        className="inline-flex items-center text-[11px] font-semibold px-2 py-1 rounded"
+                        style={{ backgroundColor: badge.bg, color: badge.text }}
+                      >
+                        L{stageLevel} {stage?.name}
+                      </span>
+                    </div>
+
+                    {/* 5. ë¨ê³ ì í â 7 buttons */}
                     <div className="flex gap-1 px-1">
                       {STAGES.map(s => {
                         const isCurrent = stageLevel === s.level
@@ -167,7 +202,7 @@ export default function SystemTable({ states, members, snapshots: _snapshots, fi
                             key={s.level}
                             onClick={() => handleStageClick(sys.id, s.level)}
                             disabled={readOnly}
-                            title={`${s.name} (${s.points}점)\n${s.criteria.join('\n')}`}
+                            title={`${s.name} (${s.points}ì )\n${s.criteria.join('\n')}`}
                             className="flex-1 py-1 rounded text-[10px] font-medium transition-all disabled:cursor-default"
                             style={
                               isCurrent
@@ -184,17 +219,7 @@ export default function SystemTable({ states, members, snapshots: _snapshots, fi
                       })}
                     </div>
 
-                    {/* Current stage badge */}
-                    <div className="text-center">
-                      <span
-                        className="inline-flex items-center text-[11px] font-semibold px-2 py-1 rounded"
-                        style={{ backgroundColor: badge.bg, color: badge.text }}
-                      >
-                        L{stageLevel} {stage?.name}
-                      </span>
-                    </div>
-
-                    {/* Status */}
+                    {/* 6. ìí (Status) */}
                     <div className="text-center">
                       <button
                         onClick={() => handleStatusToggle(sys.id, state.status)}
@@ -208,34 +233,8 @@ export default function SystemTable({ states, members, snapshots: _snapshots, fi
                             : { backgroundColor: '#1a1a2a', color: '#8888a0' }
                         }
                       >
-                        {state.status === 'delay' ? '지연' : state.status === 'hold' ? '보류' : '정상'}
+                        {state.status === 'delay' ? 'ì§ì°' : state.status === 'hold' ? 'ë³´ë¥' : 'ì ì'}
                       </button>
-                    </div>
-
-                    {/* Owner */}
-                    <div className="text-right text-xs" onClick={e => e.stopPropagation()}>
-                      {editingOwner === sys.id ? (
-                        <select
-                          autoFocus
-                          value={state.owner_id ?? ''}
-                          onChange={e => handleOwnerChange(sys.id, e.target.value)}
-                          onBlur={() => setEditingOwner(null)}
-                          className="w-full rounded px-1 py-0.5 text-xs focus:outline-none"
-                          style={{ backgroundColor: '#1a1a35', color: '#e0e0f0', border: '1px solid #333360' }}
-                        >
-                          <option value="">미지정</option>
-                          {members.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
-                        </select>
-                      ) : (
-                        <button
-                          onClick={() => !readOnly && setEditingOwner(sys.id)}
-                          disabled={readOnly}
-                          className="hover:opacity-80 transition-opacity"
-                          style={{ color: ownerNames ? '#e0e0f0' : '#8888a0' }}
-                        >
-                          {ownerNames || '미지정'}
-                        </button>
-                      )}
                     </div>
                   </div>
                 )
