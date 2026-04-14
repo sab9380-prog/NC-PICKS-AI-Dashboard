@@ -16,7 +16,7 @@ export default function AppShell({
   scheduleTab,
   timelineTab,
   onSettingsClick,
-  readOnly = false,
+  readOnly: _readOnly = false,
 }: Props) {
   const [activeTab, setActiveTab] = useState<TabId>('status')
 
@@ -27,23 +27,11 @@ export default function AppShell({
         className="sticky top-0 z-30 shadow-lg"
         style={{ backgroundColor: '#0e0e22', borderBottom: '1px solid #1a1a35' }}
       >
-        <div className="flex items-center justify-between px-4 py-2">
-          <div className="flex items-center gap-3">
-            <h1 className="text-sm font-bold tracking-tight" style={{ color: '#e0e0f0' }}>
-              Picks AI Pipeline Tracker
+        <div className="flex items-center justify-between px-5 py-3">
+          <div className="flex items-center gap-2">
+            <h1 className="text-lg font-extrabold tracking-tight" style={{ color: '#ffffff' }}>
+              픽스 AI 시스템 대시보드
             </h1>
-            {readOnly && (
-              <span
-                className="text-[10px] px-1.5 py-0.5 rounded"
-                style={{
-                  backgroundColor: '#2a1a00',
-                  color: '#f0c870',
-                  border: '1px solid #40300a',
-                }}
-              >
-                읽기전용
-              </span>
-            )}
           </div>
           <div className="flex items-center gap-2">
             <TabNav active={activeTab} onChange={setActiveTab} />

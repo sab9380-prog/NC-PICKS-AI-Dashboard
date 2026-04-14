@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react'
+import { supabase } from '../lib/supabase'
 import { STORAGE_KEYS, loadFromStorage, saveToStorage } from '../lib/storage'
 import type { Member } from '../types'
 
@@ -15,6 +16,20 @@ export function useAuth() {
   )
 
   const login = useCallback(async (password: string): Promise<boolean> => {
+    try {
+      const { data, error } = await supabase
+        .from('app_config')
+        .select('value')
+        .eq('key', 'password')
+        .single()
+
+      if (!error && data) {
+        return password === data.value
+      }
+    } catch {
+      // Supabase 실패 시 localStorage 폴백
+    }
+
     const stored = loadFromStorage(STORAGE_KEYS.password, DEFAULT_PASSWORD)
     return password === stored
   }, [])
