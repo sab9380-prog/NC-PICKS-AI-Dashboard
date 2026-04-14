@@ -171,8 +171,6 @@ export function useWeeklyData(
       }
 
       // Systems needing attention: 0 score for 2+ weeks or score decreased
-      const prevPrevWeek = weeks.length > 2 ? weeks[weeks.length - 3] : null
-      const _prevPrevScore = prevPrevWeek ? (data.weekScores[prevPrevWeek] ?? null) : null
       if (curScore === 0 && (prevScore === 0 || prevScore === null)) {
         needsAttention.push({
           systemId: sys.id,
