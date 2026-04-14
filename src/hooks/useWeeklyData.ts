@@ -30,7 +30,6 @@ export function weekToKorean(isoWeek: string): string {
   const firstMondayOfMonth = new Date(firstOfMonth)
   const fDay = firstMondayOfMonth.getDay() || 7
   if (fDay > 1) firstMondayOfMonth.setDate(firstMondayOfMonth.getDate() + (8 - fDay))
-  const weekOfMonth = Math.ceil((targetDate.getDate() - firstMondayOfMonth.getDate() + firstMondayOfMonth.getDate()) / 7)
   const adjustedWeek = Math.max(1, Math.min(5, Math.ceil(targetDate.getDate() / 7)))
   return `${month}월 ${adjustedWeek}주`
 }
@@ -79,12 +78,6 @@ export type WeeklySummary = {
   needsAttention: { systemId: string; name: string; score: number; desc: string }[]
   zones: WeeklyZoneData[]
   zoneAvgs: Record<string, { avg: number; delta: number | null }>
-}
-
-function getStageLabel(score: number): string {
-  const level = getStageFromScore(score)
-  const stage = STAGES[level]
-  return `L${level} ${stage.name}`
 }
 
 function getStageName(score: number): string {
@@ -179,7 +172,7 @@ export function useWeeklyData(
 
       // Systems needing attention: 0 score for 2+ weeks or score decreased
       const prevPrevWeek = weeks.length > 2 ? weeks[weeks.length - 3] : null
-      const prevPrevScore = prevPrevWeek ? (data.weekScores[prevPrevWeek] ?? null) : null
+      const _prevPrevScore = prevPrevWeek ? (data.weekScores[prevPrevWeek] ?? null) : null
       if (curScore === 0 && (prevScore === 0 || prevScore === null)) {
         needsAttention.push({
           systemId: sys.id,
@@ -220,7 +213,7 @@ export function useWeeklyData(
       }
     }
 
-    // Total average
+    // Total averageh
     const allCurrentScores = SYSTEMS.map(s => weekMap[currentWeek]?.[s.id] ?? 0)
     const totalAvg = allCurrentScores.length > 0
       ? Math.round((allCurrentScores.reduce((a, b) => a + b, 0) / allCurrentScores.length) * 10) / 10
