@@ -52,6 +52,7 @@ export default function SharePage() {
       onSettingsClick={() => {}}
       header={<Header states={states} snapshots={latestSnapshots} />}
       statusTab={scheduleTab}
+      weeklyTab={scheduleTab}
       scheduleTab={scheduleTab}
       timelineTab={scheduleTab}
     />
