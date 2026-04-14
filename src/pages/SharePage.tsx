@@ -5,20 +5,16 @@ import { useSnapshots } from '../hooks/useSnapshots'
 import { STORAGE_KEYS, loadFromStorage } from '../lib/storage'
 import AppShell from '../components/layout/AppShell'
 import Header from '../components/layout/Header'
-import AlertPanel from '../components/schedule/AlertPanel'
-import RagTable from '../components/schedule/RagTable'
 import type { ShareToken } from '../types'
-
-const NOW = '2026-04'
 
 function InvalidToken() {
   return (
     <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
       <div className="text-center space-y-3 px-6">
-        <div className="text-4xl">🔒</div>
-        <h1 className="text-xl font-bold">유효하지 않은 공유 링크</h1>
+        <div className="text-4xl">ð</div>
+        <h1 className="text-xl font-bold">ì í¨íì§ ìì ê³µì  ë§í¬</h1>
         <p className="text-slate-400 text-sm">
-          이 링크는 존재하지 않거나 비활성화되었습니다.
+          ì´ ë§ï¼¬ë ì¡´ì¬íì§ ìê±°ë ë¹íì±íëììµëë¤.
         </p>
       </div>
     </div>
@@ -39,10 +35,9 @@ export default function SharePage() {
     return <InvalidToken />
   }
 
-  const scheduleTab = (
-    <div className="space-y-0">
-      <AlertPanel states={states} members={activeMembers} now={NOW} />
-      <RagTable states={states} members={activeMembers} snapshots={latestSnapshots} now={NOW} />
+  const placeholder = (
+    <div style={{ padding: 40, textAlign: 'center', color: '#888' }}>
+      ê³µì  íì´ì§ (ì½ê¸° ì ì©)
     </div>
   )
 
@@ -51,10 +46,9 @@ export default function SharePage() {
       readOnly={true}
       onSettingsClick={() => {}}
       header={<Header states={states} snapshots={latestSnapshots} />}
-      statusTab={scheduleTab}
-      weeklyTab={scheduleTab}
-      scheduleTab={scheduleTab}
-      timelineTab={scheduleTab}
+      statusTab={placeholder}
+      weeklyTab={placeholder}
+      timelineTab={placeholder}
     />
   )
 }
