@@ -1,7 +1,8 @@
-type TabId = 'status' | 'schedule' | 'timeline'
+type TabId = 'status' | 'weekly' | 'schedule' | 'timeline'
 
 const TABS: { id: TabId; label: string }[] = [
   { id: 'status', label: '시스템 현황' },
+  { id: 'weekly', label: '주차별 진척도' },
   { id: 'schedule', label: '일정 현황' },
   { id: 'timeline', label: '타임라인' },
 ]

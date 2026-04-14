@@ -4,6 +4,7 @@ import TabNav, { type TabId } from './TabNav'
 type Props = {
   header: ReactNode
   statusTab: ReactNode
+  weeklyTab: ReactNode
   scheduleTab: ReactNode
   timelineTab: ReactNode
   onSettingsClick: () => void
@@ -13,6 +14,7 @@ type Props = {
 export default function AppShell({
   header,
   statusTab,
+  weeklyTab,
   scheduleTab,
   timelineTab,
   onSettingsClick,
@@ -61,11 +63,12 @@ export default function AppShell({
 
       {/* Scrollable content: summary + tab content */}
       <main className="flex-1 overflow-auto">
-        {/* Summary cards — scrolls with content */}
-        <div className="px-4 pt-3 pb-2">{header}</div>
+        {/* Summary cards — scrolls with content (hide on weekly tab which has its own layout) */}
+        {activeTab !== 'weekly' && <div className="px-4 pt-3 pb-2">{header}</div>}
 
         {/* Tab content */}
         {activeTab === 'status' && statusTab}
+        {activeTab === 'weekly' && weeklyTab}
         {activeTab === 'schedule' && scheduleTab}
         {activeTab === 'timeline' && timelineTab}
       </main>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useSystems } from '../hooks/useSystems'
 import { useMembers } from '../hooks/useMembers'
 import { useSnapshots } from '../hooks/useSnapshots'
@@ -13,6 +13,7 @@ import AlertPanel from '../components/schedule/AlertPanel'
 import RagTable from '../components/schedule/RagTable'
 import GanttChart from '../components/timeline/GanttChart'
 import AdminPanel from '../components/admin/AdminPanel'
+import WeeklyTab from '../components/weekly/WeeklyTab'
 
 const NOW = '2026-04'
 
@@ -108,13 +109,19 @@ function TimelineTab({
 
 export default function DashboardPage() {
   const { states, updateSystem } = useSystems()
-  const { activeMembers } = useMembers()
-  const { latestSnapshots } = useSnapshots()
+  const { activeMembers, members: allMembers } = useMembers()
+  const { latestSnapshots, snapshots } = useSnapshots()
   const { currentMember } = useAuth()
   const [filter, setFilter] = useState<FilterValue>('all')
   const [showAdmin, setShowAdmin] = useState(false)
 
   const readOnly = !currentMember || currentMember.id === 'guest'
+
+  // Member map for WeeklyTab (id -> Member)
+  const memberMap = useMemo(
+    () => Object.fromEntries(allMembers.map(m => [m.id, m])),
+    [allMembers],
+  )
 
   function handleSettingsClick() {
     setShowAdmin(s => !s)
@@ -127,6 +134,13 @@ export default function DashboardPage() {
         onSettingsClick={handleSettingsClick}
         header={
           <Header states={states} snapshots={latestSnapshots} />
+        }
+        weeklyTab={
+          <WeeklyTab
+            snapshots={snapshots}
+            states={states}
+            members={memberMap}
+          />
         }
         statusTab={
           <StatusTab
