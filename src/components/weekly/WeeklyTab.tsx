@@ -6,7 +6,7 @@ import { STAGES } from '../../data/stages'
 import { ZONES } from '../../data/zones'
 import SystemDetailModal from './SystemDetailModal'
 
-// âââ Style constants âââ
+// ─── Style constants ───
 const C = {
   bg: '#080812',
   card: '#0e0e22',
@@ -48,12 +48,12 @@ function getStageName(score: number): string {
 }
 
 function DeltaSpan({ delta, style }: { delta: number | null; style?: React.CSSProperties }) {
-  if (delta === null || delta === 0) return <span style={{ color: C.dim, ...style }}>â</span>
+  if (delta === null || delta === 0) return <span style={{ color: C.dim, ...style }}>—</span>
   if (delta > 0) return <span style={{ color: C.green, fontWeight: 700, ...style }}>+{delta}</span>
   return <span style={{ color: C.red, fontWeight: 700, ...style }}>{delta}</span>
 }
 
-// âââ Main Component âââ
+// ─── Main Component ───
 type Props = {
   snapshots: ScoreSnapshot[]
   states: Record<string, SystemState>
@@ -95,17 +95,17 @@ export default function WeeklyTab({ snapshots, states, members }: Props) {
     <div style={{ padding: '24px 28px', maxWidth: 1500, margin: '0 auto' }}>
       {/* Week Navigation */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 32 }}>
-        <button onClick={goPrev} disabled={!canPrev} style={navBtnStyle(canPrev)}>â</button>
+        <button onClick={goPrev} disabled={!canPrev} style={navBtnStyle(canPrev)}>◀</button>
         <span style={{ fontSize: 26, fontWeight: 900, color: C.white }}>{koreanLabel}</span>
         <span style={{ fontSize: 16, color: C.muted, marginLeft: 8 }}>{dateRange}</span>
-        <button onClick={goNext} disabled={!canNext} style={navBtnStyle(canNext)}>â¶</button>
+        <button onClick={goNext} disabled={!canNext} style={navBtnStyle(canNext)}>▶</button>
       </div>
 
       {/* Summary Row */}
       <div style={{ display: 'flex', gap: 14, marginBottom: 32 }}>
         {/* Total Average Score */}
         <div style={cardStyle} onClick={() => setShowHistoryModal(true)}>
-          <div style={labelStyle}>ì ì²´ íê·  ì ì</div>
+          <div style={labelStyle}>전체 평균 점수</div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
             <span style={{ fontSize: 34, fontWeight: 900, color: C.white, lineHeight: 1 }}>
               {data.totalAvg}
@@ -113,20 +113,20 @@ export default function WeeklyTab({ snapshots, states, members }: Props) {
             <DeltaSpan delta={data.totalAvgDelta} style={{ fontSize: 20, fontWeight: 900 }} />
           </div>
           <div style={{ fontSize: 14, color: C.muted, marginTop: 12, lineHeight: '1.8' }}>
-            <div>1. ì¼ë¶ ì§ìë§ AI ì§ë ëê° (ì  ì§ì AI ìì¤í ëë ë§¡ê¸° ì í¨)</div>
-            <div>2. ì´ë¸íê³¼ R&R í©ì: ìì¤í ê³ ëí ë° ìì¤í ê° ì°ë, ë³´ìì± ê°í</div>
+            <div>1. 일부 직원만 AI 진도 나감 (전 직원 AI 시스템 나눠맡기 안 함)</div>
+            <div>2. 이노플과 R&R 합의: 시스템 고도화 및 시스템 간 연동, 보안성 강화</div>
           </div>
-          <div style={{ fontSize: 13, color: C.blue, marginTop: 8 }}>ì£¼ì°¨ë³ íì¤í ë¦¬ ë³´ê¸° â</div>
+          <div style={{ fontSize: 13, color: C.blue, marginTop: 8 }}>주차별 히스토리 보기 →</div>
         </div>
 
         {/* Stage Changes */}
         <div style={{ ...cardStyle, cursor: 'default' }}>
-          <div style={labelStyle}>ë¨ê³ ë³í</div>
+          <div style={labelStyle}>단계 변화</div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
             <span style={{ fontSize: 34, fontWeight: 900, color: C.white, lineHeight: 1 }}>
               {data.stageChanges.length}
             </span>
-            <span style={{ fontSize: 16, color: C.muted }}>/ {Object.keys(states).length}ê°</span>
+            <span style={{ fontSize: 16, color: C.muted }}>/ {Object.keys(states).length}개</span>
           </div>
           <div style={{ fontSize: 15, color: C.muted, marginTop: 10, lineHeight: '1.7' }}>
             {data.stageChanges.slice(0, 4).map(sc => (
@@ -137,19 +137,19 @@ export default function WeeklyTab({ snapshots, states, members }: Props) {
 
         {/* Score Movement */}
         <div style={{ ...cardStyle, cursor: 'default' }}>
-          <div style={labelStyle}>ì ì ë³ë</div>
+          <div style={labelStyle}>점수 변동</div>
           <div style={{ display: 'flex', gap: 28, alignItems: 'baseline', marginTop: 4 }}>
             <div>
               <span style={{ fontSize: 34, fontWeight: 900, color: C.green }}>{data.scoreUp}</span>{' '}
-              <span style={{ fontSize: 16, color: C.muted }}>ìì¹</span>
+              <span style={{ fontSize: 16, color: C.muted }}>상승</span>
             </div>
             <div>
               <span style={{ fontSize: 34, fontWeight: 900, color: C.dim }}>{data.scoreFlat}</span>{' '}
-              <span style={{ fontSize: 16, color: C.muted }}>ì ì§</span>
+              <span style={{ fontSize: 16, color: C.muted }}>유지</span>
             </div>
             <div>
               <span style={{ fontSize: 34, fontWeight: 900, color: C.red }}>{data.scoreDown}</span>{' '}
-              <span style={{ fontSize: 16, color: C.muted }}>íë½</span>
+              <span style={{ fontSize: 16, color: C.muted }}>하락</span>
             </div>
           </div>
         </div>
@@ -160,9 +160,9 @@ export default function WeeklyTab({ snapshots, states, members }: Props) {
         {/* Top Gainers */}
         <div style={highlightCardStyle}>
           <h3 style={{ fontSize: 17, fontWeight: 800, color: C.green, marginBottom: 14, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            ì´ë² ì£¼ ì ì§í ìì¤í
+            이번 주 전진한 시스템
             {data.topGainers.length > 3 && (
-              <span style={{ fontSize: 13, fontWeight: 500, color: C.blue, cursor: 'pointer' }} onClick={() => setShowGoodModal(true)}>ì ì²´ ë³´ê¸° â</span>
+              <span style={{ fontSize: 13, fontWeight: 500, color: C.blue, cursor: 'pointer' }} onClick={() => setShowGoodModal(true)}>전체 보기 →</span>
             )}
           </h3>
           {data.topGainers.slice(0, 3).map(g => (
@@ -175,23 +175,23 @@ export default function WeeklyTab({ snapshots, states, members }: Props) {
               >
                 {g.name}{' '}
                 <span style={{ color: C.green, fontSize: 17, fontWeight: 800 }}>
-                  +{g.delta}ì {g.fromStage !== g.toStage ? `, ${g.fromStage}â${g.toStage}` : ''}
+                  +{g.delta}점{g.fromStage !== g.toStage ? `, ${g.fromStage}→${g.toStage}` : ''}
                 </span>
               </div>
               <div style={{ fontSize: 15, color: C.muted, marginTop: 4, lineHeight: '1.5' }}>{g.desc}</div>
             </div>
           ))}
           {data.topGainers.length === 0 && (
-            <div style={{ fontSize: 15, color: C.dim }}>ì´ë² ì£¼ ì ì ìì¹ ìì¤í ìì</div>
+            <div style={{ fontSize: 15, color: C.dim }}>이번 주 점수 상승 시스템 없음</div>
           )}
         </div>
 
         {/* Needs Attention */}
         <div style={highlightCardStyle}>
           <h3 style={{ fontSize: 17, fontWeight: 800, color: C.red, marginBottom: 14, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            ì§ë ì ê²ì´ íìí ìì¤í
+            진도 점검이 필요한 시스템
             {data.needsAttention.length > 3 && (
-              <span style={{ fontSize: 13, fontWeight: 500, color: C.blue, cursor: 'pointer' }} onClick={() => setShowWarnModal(true)}>ì ì²´ ë³´ê¸° â</span>
+              <span style={{ fontSize: 13, fontWeight: 500, color: C.blue, cursor: 'pointer' }} onClick={() => setShowWarnModal(true)}>전체 보기 →</span>
             )}
           </h3>
           {data.needsAttention.slice(0, 3).map(n => (
@@ -202,13 +202,13 @@ export default function WeeklyTab({ snapshots, states, members }: Props) {
                 onMouseEnter={e => { (e.target as HTMLElement).style.color = C.blue }}
                 onMouseLeave={e => { (e.target as HTMLElement).style.color = C.white }}
               >
-                {n.name} <span style={{ color: C.dim }}>{n.score}ì  ì ì§</span>
+                {n.name} <span style={{ color: C.dim }}>{n.score}점 유지</span>
               </div>
               <div style={{ fontSize: 15, color: C.muted, marginTop: 4, lineHeight: '1.5' }}>{n.desc}</div>
             </div>
           ))}
           {data.needsAttention.length === 0 && (
-            <div style={{ fontSize: 15, color: C.dim }}>ëª¨ë  ìì¤íì´ ì ì ì§í ì¤</div>
+            <div style={{ fontSize: 15, color: C.dim }}>모든 시스템이 정상 진행 중</div>
           )}
         </div>
       </div>
@@ -238,7 +238,7 @@ export default function WeeklyTab({ snapshots, states, members }: Props) {
             <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: widthRatio }}>
               <span style={{ fontSize: 11, color: C.muted, marginBottom: 3, whiteSpace: 'nowrap' }}>L{stage.level} {stage.name}</span>
               <div style={{ width: '100%', height: 14, borderRadius: 3, background: `rgba(55,138,221,${0.07 + i * 0.14})` }} />
-              <span style={{ fontSize: 11, color: C.dim, marginTop: 2 }}>{stage.points}ì </span>
+              <span style={{ fontSize: 11, color: C.dim, marginTop: 2 }}>{stage.points}점</span>
             </div>
           )
         })}
@@ -249,13 +249,13 @@ export default function WeeklyTab({ snapshots, states, members }: Props) {
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr>
-              <th style={{ ...thStyle, minWidth: 280 }}>ìì¤í</th>
-              <th style={{ ...thStyle, minWidth: 110 }}>í´ê²°ì¢¬</th>
-              <th style={{ ...thStyle, minWidth: 120, textAlign: 'center' }}>íì¬ ì ì</th>
-              <th style={{ ...thStyle, minWidth: 180, textAlign: 'center' }}>ë¨ê³(ë ë²¨)</th>
+              <th style={{ ...thStyle, minWidth: 280 }}>시스템</th>
+              <th style={{ ...thStyle, minWidth: 110 }}>해결사</th>
+              <th style={{ ...thStyle, minWidth: 120, textAlign: 'center' }}>현재 점수</th>
+              <th style={{ ...thStyle, minWidth: 180, textAlign: 'center' }}>단계(레벨)</th>
               {tableWeeks.map(w => (
                 <th key={w} style={{ ...thStyle, textAlign: 'center', minWidth: 140, ...(w === currentWeek ? { background: 'rgba(55,138,221,0.06)' } : {}) }}>
-                  {w === 'future' ? 'â' : weekToKorean(w)}
+                  {w === 'future' ? '—' : weekToKorean(w)}
                 </th>
               ))}
             </tr>
@@ -279,11 +279,11 @@ export default function WeeklyTab({ snapshots, states, members }: Props) {
         </table>
       </div>
 
-      {/* âââ Modals âââ */}
+      {/* ─── Modals ─── */}
       {showHistoryModal && (
         <ModalOverlay onClose={() => setShowHistoryModal(false)}>
-          <div style={{ fontSize: 26, fontWeight: 900, color: C.white, marginBottom: 8 }}>ì ì²´ íê·  ì ì íì¤í ë¦¬</div>
-          <div style={{ fontSize: 17, color: C.muted, marginBottom: 28 }}>ì£¼ì°¨ë³ ì ì²´ íê·  ì ì ë³í</div>
+          <div style={{ fontSize: 26, fontWeight: 900, color: C.white, marginBottom: 8 }}>전체 평균 점수 히스토리</div>
+          <div style={{ fontSize: 17, color: C.muted, marginBottom: 28 }}>주차별 전체 평균 점수 변화</div>
           <ul style={{ listStyle: 'none', padding: 0 }}>
             {[...data.weeks].reverse().map((w, i, arr) => {
               const scores = data.zones.flatMap(z => z.systems.map(s => s.weekScores[w] ?? 0))
@@ -297,7 +297,7 @@ export default function WeeklyTab({ snapshots, states, members }: Props) {
                   <div style={{ fontSize: 17, fontWeight: 700, color: C.blue, minWidth: 100 }}>{weekToKorean(w)}</div>
                   <div>
                     <div style={{ fontSize: 20, fontWeight: 900, color: C.white }}>
-                      {avg}ì  <DeltaSpan delta={delta} style={{ fontSize: 17 }} />
+                      {avg}점 <DeltaSpan delta={delta} style={{ fontSize: 17 }} />
                     </div>
                   </div>
                 </li>
@@ -309,14 +309,14 @@ export default function WeeklyTab({ snapshots, states, members }: Props) {
 
       {showGoodModal && (
         <ModalOverlay onClose={() => setShowGoodModal(false)}>
-          <div style={{ fontSize: 26, fontWeight: 900, color: C.green, marginBottom: 28 }}>ì´ë² ì£¼ ì ì§í ìì¤í â ì ì²´</div>
+          <div style={{ fontSize: 26, fontWeight: 900, color: C.green, marginBottom: 28 }}>이번 주 전진한 시스템 — 전체</div>
           <ul style={{ listStyle: 'none', padding: 0 }}>
             {data.topGainers.map(g => (
               <li key={g.systemId} style={{ display: 'flex', gap: 20, padding: '20px 0', borderBottom: `1px solid ${C.border}` }}>
-                <div style={{ fontSize: 17, fontWeight: 700, color: C.blue, minWidth: 80 }}>+{g.delta}ì </div>
+                <div style={{ fontSize: 17, fontWeight: 700, color: C.blue, minWidth: 80 }}>+{g.delta}점</div>
                 <div>
                   <div style={{ fontSize: 17, color: C.text }}>
-                    <strong>{g.name}</strong> â {g.fromStage !== g.toStage ? `${g.fromStage}â${g.toStage}` : `${g.toStage} ì ì§`}
+                    <strong>{g.name}</strong> — {g.fromStage !== g.toStage ? `${g.fromStage}→${g.toStage}` : `${g.toStage} 유지`}
                   </div>
                   <div style={{ fontSize: 14, color: C.dim, marginTop: 6 }}>{g.desc}</div>
                 </div>
@@ -328,11 +328,11 @@ export default function WeeklyTab({ snapshots, states, members }: Props) {
 
       {showWarnModal && (
         <ModalOverlay onClose={() => setShowWarnModal(false)}>
-          <div style={{ fontSize: 26, fontWeight: 900, color: C.red, marginBottom: 28 }}>ì§ë ì ê²ì´ íìí ìì¤í â ì ì²´</div>
+          <div style={{ fontSize: 26, fontWeight: 900, color: C.red, marginBottom: 28 }}>진도 점검이 필요한 시스템 — 전체</div>
           <ul style={{ listStyle: 'none', padding: 0 }}>
             {data.needsAttention.map(n => (
               <li key={n.systemId} style={{ display: 'flex', gap: 20, padding: '20px 0', borderBottom: `1px solid ${C.border}` }}>
-                <div style={{ fontSize: 17, fontWeight: 700, color: C.red, minWidth: 80 }}>{n.score}ì </div>
+                <div style={{ fontSize: 17, fontWeight: 700, color: C.red, minWidth: 80 }}>{n.score}점</div>
                 <div>
                   <div style={{ fontSize: 17, color: C.text }}><strong>{n.name}</strong></div>
                   <div style={{ fontSize: 14, color: C.dim, marginTop: 6 }}>{n.desc}</div>
@@ -356,7 +356,7 @@ export default function WeeklyTab({ snapshots, states, members }: Props) {
   )
 }
 
-// âââ Zone Section âââ
+// ─── Zone Section ───
 function ZoneSection({
   zone,
   zoneAvg,
@@ -389,7 +389,7 @@ function ZoneSection({
         >
           {zone.zoneName}{' '}
           <span style={{ fontSize: 15, fontWeight: 600, color: C.muted, marginLeft: 12 }}>
-            íê·  {zoneAvg.avg} <DeltaSpan delta={zoneAvg.delta} style={{ fontSize: 14 }} />
+            평균 {zoneAvg.avg} <DeltaSpan delta={zoneAvg.delta} style={{ fontSize: 14 }} />
           </span>
         </td>
       </tr>
@@ -430,7 +430,7 @@ function ZoneSection({
               if (w === 'future') {
                 return (
                   <td key={w} style={{ ...tdStyle, textAlign: 'center', padding: '14px 12px' }}>
-                    <div style={{ fontSize: 22, color: '#1e1e30' }}>â</div>
+                    <div style={{ fontSize: 22, color: '#1e1e30' }}>—</div>
                   </td>
                 )
               }
@@ -438,7 +438,7 @@ function ZoneSection({
               if (score === null || score === undefined) {
                 return (
                   <td key={w} style={{ ...tdStyle, textAlign: 'center', padding: '14px 12px' }}>
-                    <div style={{ fontSize: 22, color: '#1e1e30' }}>â</div>
+                    <div style={{ fontSize: 22, color: '#1e1e30' }}>—</div>
                   </td>
                 )
               }
@@ -471,30 +471,28 @@ function ZoneSection({
                     margin: '-8px -4px',
                     background: score === 0 ? 'transparent' : getHeatBg(score),
                   }}>
-                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
-                      <span style={{
-                        fontSize: 26,
-                        fontWeight: 900,
-                        color: score === 0 ? '#2a2a40' : C.white,
-                        lineHeight: 1,
-                      }}>
-                        {score}
-                      </span>
-                      {cellDelta !== null && cellDelta !== 0 && (
-                        <DeltaSpan delta={cellDelta} style={{ fontSize: 16, fontWeight: 900 }} />
-                      )}
-                    </div>
+                    <span style={{
+                      fontSize: 26,
+                      fontWeight: 900,
+                      color: score === 0 ? '#2a2a40' : C.white,
+                      lineHeight: 1,
+                    }}>
+                      {score}
+                    </span>
+                    {cellDelta !== null && cellDelta !== 0 && (
+                      <DeltaSpan delta={cellDelta} style={{ fontSize: 18, fontWeight: 900 }} />
+                    )}
                     {cellStageChanged && (
                       <span style={{
-                        fontSize: 13,
+                        fontSize: 15,
                         fontWeight: 800,
                         color: C.green,
                         background: 'rgba(74,222,128,0.15)',
-                        padding: '3px 8px',
+                        padding: '4px 10px',
                         borderRadius: 6,
-                        marginTop: 2,
+                        marginTop: 4,
                       }}>
-                        {getStageName(prevS!)}{' â '}{getStageName(score)}
+                        {getStageName(prevS!)}{' → '}{getStageName(score)}
                       </span>
                     )}
                   </div>
@@ -508,7 +506,7 @@ function ZoneSection({
   )
 }
 
-// âââ Modal Overlay âââ
+// ─── Modal Overlay ───
 function ModalOverlay({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
   return (
     <div
@@ -536,7 +534,7 @@ function ModalOverlay({ children, onClose }: { children: React.ReactNode; onClos
               background: '#151528', border: '1px solid #252540',
               color: C.muted, width: 40, height: 40, borderRadius: 8, cursor: 'pointer', fontSize: 20,
             }}
-          >â</button>
+          >✕</button>
         </div>
         {children}
       </div>
@@ -544,7 +542,7 @@ function ModalOverlay({ children, onClose }: { children: React.ReactNode; onClos
   )
 }
 
-// âââ Styles âââ
+// ─── Styles ───
 const cardStyle: React.CSSProperties = {
   background: C.card,
   border: `1px solid ${C.border}`,
