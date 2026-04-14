@@ -3,14 +3,14 @@ import { SYSTEMS } from '../data/systems'
 import type { SystemState, SPIStatus } from '../types'
 
 /** 점수(0~100)에서 해당하는 단계 레벨(0~6)을 역산.
- *  이전 단계 점수를 넘었으면 다음 단계로 진입한 것으로 판정.
- *  예: 10점 초과 → L2(개발), 25점 초과 → L3(도입) */
+ *  기준점과 정확히 같으면 해당 단계, 초과해야 다음 단계 진입.
+ *  예: 0점 = L0, 1점 = L1, 10점 = L1, 11점 = L2 */
 export function getStageFromScore(score: number): number {
-  if (score <= 0) return 0
   for (let i = STAGE_POINTS.length - 1; i >= 0; i--) {
-    if (score >= STAGE_POINTS[i]) return Math.min(i + 1, STAGE_POINTS.length - 1)
+    if (score > STAGE_POINTS[i]) return Math.min(i + 1, STAGE_POINTS.length - 1)
+    if (score === STAGE_POINTS[i]) return i
   }
-  return 1
+  return 0
 }
 
 /** 시스템의 점수를 직접 반환 */

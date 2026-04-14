@@ -29,13 +29,44 @@ function makeState(overrides: Partial<SystemState> = {}): SystemState {
 }
 
 describe('getStageFromScore', () => {
-  it('returns 0 for score 0', () => {
+  // 기준점과 정확히 같으면 해당 단계, 초과해야 다음 단계
+  it('returns 0 for score 0 (L0 미착수)', () => {
     expect(getStageFromScore(0)).toBe(0)
   })
-  it('returns 3 for score 40 (도입)', () => {
+  it('returns 1 for score 1 (L1 기획 진입)', () => {
+    expect(getStageFromScore(1)).toBe(1)
+  })
+  it('returns 1 for score 10 (L1 기획 — 기준점 정확히)', () => {
+    expect(getStageFromScore(10)).toBe(1)
+  })
+  it('returns 2 for score 11 (L2 개발 진입)', () => {
+    expect(getStageFromScore(11)).toBe(2)
+  })
+  it('returns 2 for score 25 (L2 개발 — 기준점 정확히)', () => {
+    expect(getStageFromScore(25)).toBe(2)
+  })
+  it('returns 3 for score 26 (L3 도입 진입)', () => {
+    expect(getStageFromScore(26)).toBe(3)
+  })
+  it('returns 3 for score 40 (L3 도입 — 기준점 정확히)', () => {
     expect(getStageFromScore(40)).toBe(3)
   })
-  it('returns 6 for score 100 (자동화)', () => {
+  it('returns 4 for score 41 (L4 활용 진입)', () => {
+    expect(getStageFromScore(41)).toBe(4)
+  })
+  it('returns 4 for score 60 (L4 활용 — 기준점 정확히)', () => {
+    expect(getStageFromScore(60)).toBe(4)
+  })
+  it('returns 5 for score 61 (L5 최적화 진입)', () => {
+    expect(getStageFromScore(61)).toBe(5)
+  })
+  it('returns 5 for score 80 (L5 최적화 — 기준점 정확히)', () => {
+    expect(getStageFromScore(80)).toBe(5)
+  })
+  it('returns 6 for score 81 (L6 자동화 진입)', () => {
+    expect(getStageFromScore(81)).toBe(6)
+  })
+  it('returns 6 for score 100 (L6 자동화 — 기준점 정확히)', () => {
     expect(getStageFromScore(100)).toBe(6)
   })
 })
