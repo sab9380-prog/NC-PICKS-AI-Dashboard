@@ -9,6 +9,16 @@ type Props = {
   snapshots: Record<string, ScoreSnapshot>
 }
 
+const STAGE_BAR_COLORS = [
+  '#333348', // L0 미착수
+  '#2a4080', // L1 기획
+  '#3050a0', // L2 개발
+  '#206080', // L3 도입
+  '#806020', // L4 활용
+  '#5030a0', // L5 최적화
+  '#208050', // L6 자동화
+]
+
 // ── KPI Card ──────────────────────────────────────────────────────────────────
 function KpiCard({
   accent,
@@ -28,7 +38,7 @@ function KpiCard({
         borderTop: `2px solid ${accent}`,
       }}
     >
-      <div className="text-[11px] font-medium" style={{ color: '#8888a0' }}>
+      <div className="text-sm font-semibold tracking-wide" style={{ color: '#c0c0d8' }}>
         {label}
       </div>
       <div className="flex-1">{children}</div>
@@ -123,41 +133,83 @@ export default function Header({ states }: Props) {
         {/* 1. 전체 평균 점수 */}
         <KpiCard accent="#378add" label="전체 평균 점수">
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-bold tabular-nums" style={{ color: '#e0e0f0' }}>
-              {totalScore}
+            <span
+              className="text-4xl font-extrabold tabular-nums tracking-tight"
+              style={{
+                color: '#ffffff',
+                textShadow: '0 0 20px rgba(55,138,221,0.5), 0 0 40px rgba(55,138,221,0.2)',
+              }}
+            >
+              {totalScore}<span className="text-lg font-bold" style={{ color: '#a0a0c0' }}>점</span>
             </span>
-            <span className="text-sm" style={{ color: '#8888a0' }}>/ 100</span>
+            <span className="text-sm font-medium" style={{ color: '#a0a0c0' }}>/ 100</span>
           </div>
         </KpiCard>
 
         {/* 2. 단계 분포 */}
         <KpiCard accent="#7f77dd" label="단계 분포">
-          <div className="flex flex-wrap gap-x-3 gap-y-1 mt-1">
-            {stageNames.map((name, i) => (
-              <span key={i} className="text-xs tabular-nums" style={{ color: '#e0e0f0' }}>
-                {name}{' '}
-                <span className="font-bold">{stageCounts[i] ?? 0}</span>
-              </span>
-            ))}
+          {/* Visual bar */}
+          <div className="flex h-6 rounded overflow-hidden mt-1 mb-2" style={{ backgroundColor: '#1a1a35' }}>
+            {stageCounts.map((count, i) =>
+              count > 0 ? (
+                <div
+                  key={i}
+                  className="flex items-center justify-center text-[10px] font-extrabold"
+                  style={{
+                    flex: count,
+                    backgroundColor: STAGE_BAR_COLORS[i],
+                    color: '#ffffff',
+                  }}
+                >
+                  {count}
+                </div>
+              ) : null
+            )}
+          </div>
+          {/* Legend */}
+          <div className="flex flex-wrap gap-x-3 gap-y-0.5">
+            {stageNames.map((name, i) => {
+              const count = stageCounts[i] ?? 0
+              if (count === 0) return null
+              return (
+                <span key={i} className="flex items-center gap-1 text-[11px]">
+                  <span className="w-2 h-2 rounded-sm shrink-0" style={{ backgroundColor: STAGE_BAR_COLORS[i] }} />
+                  <span style={{ color: '#c8c8e0' }}>{name}</span>
+                  <span className="font-extrabold" style={{ color: '#ffffff' }}>{count}</span>
+                </span>
+              )
+            })}
           </div>
         </KpiCard>
 
         {/* 3. 속도 환산 가치 */}
         <KpiCard accent="#1d9e75" label="속도 환산 가치">
-          <div className="text-2xl font-bold tabular-nums" style={{ color: '#1d9e75' }}>
+          <div
+            className="text-3xl font-extrabold tabular-nums tracking-tight"
+            style={{
+              color: '#3dffc0',
+              textShadow: '0 0 20px rgba(29,158,117,0.5), 0 0 40px rgba(29,158,117,0.2)',
+            }}
+          >
             {speedValue}
           </div>
-          <div className="text-[10px] mt-0.5" style={{ color: '#8888a0' }}>
-            도입 이상 시스템 {deployedCount}개 기준
+          <div className="text-[11px] mt-1 font-medium" style={{ color: '#a0a0c0' }}>
+            도입 이상 시스템 <span style={{ color: '#ffffff', fontWeight: 700 }}>{deployedCount}</span>개 기준
           </div>
         </KpiCard>
 
         {/* 4. 목표 달성 시 */}
         <KpiCard accent="#d85a30" label="목표 달성 시">
-          <div className="text-2xl font-bold" style={{ color: '#d85a30' }}>
+          <div
+            className="text-3xl font-extrabold tracking-tight"
+            style={{
+              color: '#ff8855',
+              textShadow: '0 0 20px rgba(216,90,48,0.5), 0 0 40px rgba(216,90,48,0.2)',
+            }}
+          >
             +120억
           </div>
-          <div className="text-[10px] mt-0.5" style={{ color: '#8888a0' }}>
+          <div className="text-[11px] mt-1 font-medium" style={{ color: '#a0a0c0' }}>
             연간 운영 효율 목표
           </div>
         </KpiCard>

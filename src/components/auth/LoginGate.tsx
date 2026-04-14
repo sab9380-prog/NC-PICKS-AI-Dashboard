@@ -30,7 +30,7 @@ export default function LoginGate({ onLogin, onSelectMember }: Props) {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center">
         <form onSubmit={handlePasswordSubmit} className="bg-slate-900 rounded-xl p-8 w-full max-w-sm">
-          <h1 className="text-xl font-bold mb-1">Picks AI Pipeline Tracker</h1>
+          <h1 className="text-xl font-bold mb-1">픽스 AI 시스템 대시보드</h1>
           <p className="text-slate-400 text-sm mb-6">접속 비밀번호를 입력하세요</p>
           <input
             type="password"

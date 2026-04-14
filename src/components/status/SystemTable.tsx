@@ -124,7 +124,8 @@ export default function SystemTable({ states, members, snapshots: _snapshots, fi
                 const stageLevel = getStageFromScore(state.score)
                 const stage = STAGES[stageLevel]
                 const badge = STAGE_BADGE[stageLevel] ?? STAGE_BADGE[0]
-                const owner = members.find(m => m.id === state.owner_id)
+                const ownerIds = state.owner_id?.split(',').filter(Boolean) ?? []
+                const ownerNames = ownerIds.map(id => members.find(m => m.id === id)?.name ?? id).join(', ')
                 const isLast = idx === filtered.length - 1
 
                 return (
@@ -230,9 +231,9 @@ export default function SystemTable({ states, members, snapshots: _snapshots, fi
                           onClick={() => !readOnly && setEditingOwner(sys.id)}
                           disabled={readOnly}
                           className="hover:opacity-80 transition-opacity"
-                          style={{ color: owner ? '#e0e0f0' : '#8888a0' }}
+                          style={{ color: ownerNames ? '#e0e0f0' : '#8888a0' }}
                         >
-                          {owner?.name ?? '미지정'}
+                          {ownerNames || '미지정'}
                         </button>
                       )}
                     </div>

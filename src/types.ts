@@ -15,6 +15,7 @@ export type SystemMeta = {
   name: string
   desc: string
   initialScore: number
+  initialOwnerIds?: string[]
 }
 
 export type SystemState = {
