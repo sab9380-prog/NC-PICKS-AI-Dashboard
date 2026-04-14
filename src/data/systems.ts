@@ -11,8 +11,8 @@ export const SYSTEMS: SystemMeta[] = [
   // 03 매입
   { id: 's06', zoneId: '03', name: 'AI 스마트 매입', desc: '매입 진척 실시간 대시보드·의사결정 자동화', initialScore: 0, initialOwnerIds: ['m-baeksh', 'm-hanjh', 'm-johik'] },
   { id: 's07', zoneId: '03', name: 'AI 자동발주(PO 자동 생성)', desc: '승인 즉시 PO 자동 발행·발주 서류 생성', initialScore: 0, initialOwnerIds: ['m-yunsh', 'm-hongik', 'm-kimyh'] },
+  { id: 's08', zoneId: '03', name: 'AI 가품 판별 솔루션', desc: '비전 AI 기반 가품·정품 자동 판별', initialScore: 60, initialOwnerIds: ['m-tipa'] },
   // 04 상품화(물류)
-  { id: 's08', zoneId: '04', name: 'AI 가품 판별 솔루션', desc: '비전 AI 기반 가품·정품 자동 판별', initialScore: 60, initialOwnerIds: ['m-tipa'] },
   { id: 's09', zoneId: '04', name: '비전 AI 스마트 분류기', desc: '시간당 3,000피스 무인 상품 분류', initialScore: 0, initialOwnerIds: ['m-yangsh'] },
   { id: 's10', zoneId: '04', name: 'RFID 실시간 재고추적', desc: '보안택 자동 부착·Unit Level 실시간 재고 추적', initialScore: 0, initialOwnerIds: ['m-ohkm'] },
   { id: 's11', zoneId: '04', name: 'AI D급 필터링(워스트 사전제거)', desc: '최악 상품 자동 감별·사전 제거', initialScore: 0, initialOwnerIds: ['m-yangsh'] },
