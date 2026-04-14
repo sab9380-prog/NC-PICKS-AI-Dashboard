@@ -120,11 +120,10 @@ export default function Header({ states }: Props) {
   // Stage names for distribution display
   const stageNames = STAGES.map(s => s.name)
 
-  // Count systems at stage >= 3 (도입 이상)
-  const deployedCount = SYSTEMS.filter(sys => getStageFromScore(states[sys.id]?.score ?? 0) >= 3).length
-
-  // Value per deployed system (roughly 1억 each, simplified)
-  const speedValue = `+약 ${deployedCount}억`
+  // 속도 환산 가치 = 목표 달성시 금액(120억) × (전체평균점수 / 100) / 12
+  const TARGET_AMOUNT = 120 // 억
+  const speedValueNum = Math.round(TARGET_AMOUNT * (totalScore / 100) / 12 * 10) / 10
+  const speedValue = `+약 ${speedValueNum}억`
 
   return (
     <div className="space-y-3">
@@ -194,7 +193,7 @@ export default function Header({ states }: Props) {
             {speedValue}
           </div>
           <div className="text-[11px] mt-1 font-medium" style={{ color: '#a0a0c0' }}>
-            도입 이상 시스템 <span style={{ color: '#ffffff', fontWeight: 700 }}>{deployedCount}</span>개 기준
+            도입 이상 시스템 {SYSTEMS.filter(sys => getStageFromScore(states[sys.id]?.score ?? 0) >= 3).length}개 기준
           </div>
         </KpiCard>
 
