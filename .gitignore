@@ -26,3 +26,13 @@ dist-ssr
 # Environment variables
 .env.local
 .env.*.local
+
+# 작업용 목업·프리뷰
+dashboard-preview.html
+weekly-progress-mockup*.html
+
+# 일회용 푸시 스크립트
+git-push*.bat
+
+# 전략 문서 (바이너리)
+*.pptx
